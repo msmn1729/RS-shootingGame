@@ -134,7 +134,8 @@ public class RankState extends Context implements IState {
                             //"playerID""playerAirplaneType""playerScore""recordDate"
                             JSONArray jsonArray = response.getJSONArray("response");
                             String playerID,playerAirplaneType,playerScore,recordDate;
-                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                            for (int i = 0; i < 20; i++) { //원본 i < jsonArray.length()
                                 JSONObject ranking = jsonArray.getJSONObject(i);
 
                                 playerID = ranking.getString("playerID");
@@ -190,6 +191,13 @@ public class RankState extends Context implements IState {
 
         return true;
     }
+
+
+
+    //*****************************************************************************************
+    //*****************************************************************************************
+    //*****************************************************************************************
+    //이 아래는 에러가 아니므로 무시
 
     @Override
     public AssetManager getAssets() {

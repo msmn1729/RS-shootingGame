@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        playerID = "GOD";
+        playerID = "zzxc";
         Random random = new Random(); //임시 score 0~9999 랜덤값
         RankRequest rankRequest = new RankRequest(playerID, "TYPE2",
                 random.nextInt(9999) + 1 + "", recordDate,

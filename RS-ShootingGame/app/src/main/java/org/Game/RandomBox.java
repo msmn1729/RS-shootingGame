@@ -24,6 +24,7 @@ public class RandomBox extends SpriteAnimation {
         speed = 3.0f;
     }
 
+
     void move(){
         m_y += speed;
     }

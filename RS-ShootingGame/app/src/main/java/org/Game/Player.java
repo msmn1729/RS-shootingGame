@@ -3,6 +3,7 @@ package org.Game;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.example.gameframework.SoundManager;
 import com.example.gameframework.SpriteAnimation;
 
 public class Player extends SpriteAnimation {
@@ -32,7 +33,9 @@ public class Player extends SpriteAnimation {
     public void addLife(){
         m_Life++;
     }
-    public void destroyPlayer(){
+    public void destroyPlayer()
+    {
+        SoundManager.getInstance().play(7);
         m_Life--;
     }
 }

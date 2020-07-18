@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.R;
+import com.example.gameframework.SoundManager;
 
 public class SelectState implements IState {
 
@@ -77,8 +78,10 @@ public class SelectState implements IState {
     public boolean onTouchEvent(MotionEvent event) {//비행기 선택,
         int x = (int)event.getX(0);
         int y = (int)event.getY(0);
+//        Log.d("", "" + x +"," + y);
         if (x > 160 && x < 460 && y > 500 && y < 800)//비행기 1의 좌표를 선택했을 시 선택 이미지를 불러옴
         {//비행기 1 선택 시
+            SoundManager.getInstance().play(4);
             player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air1s),300, player1.getHeight(), true);
             flag = 0;
 
@@ -88,6 +91,7 @@ public class SelectState implements IState {
 
         else if (x > 630 && x < 930 && y > 500 && y < 800)//비행기 2 선택 시 위의 if문과 처리는 같음
         {//비행기 2 선택 시
+            SoundManager.getInstance().play(4);
             player2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air2s),300, player2.getHeight(), true);
             flag = 1;
 
@@ -95,6 +99,7 @@ public class SelectState implements IState {
             player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3),300, player3.getHeight(), true);
         }
         else if(x > 370 && x < 670 && y > 900 && y < 1200){
+            SoundManager.getInstance().play(4);
             player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3s),300, player3.getHeight(), true);
             flag = 2;
 
@@ -104,6 +109,7 @@ public class SelectState implements IState {
 
         //게임시작을 눌렀을 경우
         if(flag != 3 && x > 300 && x < 750 && y > 1300 && y < 1452){
+            SoundManager.getInstance().play(4);
             GameState.getInstance().playertype = flag;
             AppManager.getInstance().getGameView().changeGameState(GameState.getInstance());
         }

@@ -23,7 +23,6 @@ public class GameState implements IState {
     private GraphicObject m_keypad;
     int playertype;
     int killcnt=0;
-    int specialSkill=3;
     int missileSpeed = 30;
 
 
@@ -160,9 +159,8 @@ public class GameState implements IState {
         p.setTextSize(40);
         p.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         p.setColor(Color.BLACK);
-        canvas.drawText("생명  " +String.valueOf(m_player.getLife()),100, 100, p);
-        canvas.drawText("처치한 적  "+ String.valueOf(killcnt),700, 100,p);
-        canvas.drawText("필살기  " + String.valueOf(specialSkill), 700, 1600, p);
+        canvas.drawText("남은 목숨 : " +String.valueOf(m_player.getLife()),100, 100, p);
+        canvas.drawText("쓰러뜨린 적 : "+ String.valueOf(killcnt),700, 100,p);
     }
 
     @Override

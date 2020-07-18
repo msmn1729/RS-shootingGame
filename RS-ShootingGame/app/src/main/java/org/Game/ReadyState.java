@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.R;
+import com.example.gameframework.SoundManager;
 
 public class ReadyState implements IState {
     Point point = new Point();
@@ -71,12 +72,12 @@ public class ReadyState implements IState {
     @Override
     public void Render(Canvas canvas) {
         bg_ready.Draw(canvas);
+
         canvas.drawBitmap(shoot, 140, 200, null);
         canvas.drawBitmap(btn_start,point.x/4, (point.y/8)*4-20, null);
         canvas.drawBitmap(btn_rank, point.x/4, (point.y/8) * 5 -30, null);
         canvas.drawBitmap(btn_set,point.x/4,(point.y/8) * 6 -40 , null);
         canvas.drawBitmap(btn_exit, point.x/4, (point.y/8) * 7 - 50, null);
-
 
     }
 
@@ -99,23 +100,23 @@ public class ReadyState implements IState {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             if(r_start.contains(x,y)){
-                    //SoundManager.getInstance().play(1);
-                    AppManager.getInstance().getGameView().changeGameState(SelectState.getInstance());
+                SoundManager.getInstance().play(4);
+                AppManager.getInstance().getGameView().changeGameState(SelectState.getInstance());
             }
             else if(r_rank.contains(x,y)) {
-//                    SoundManager.getInstance().play(1);
-                    AppManager.getInstance().getGameView().changeGameState(RankState.getInstance());
+                SoundManager.getInstance().play(4);
+                AppManager.getInstance().getGameView().changeGameState(RankState.getInstance());
             }
 
             else if(r_set.contains(x,y))
             {
-//                    SoundManager.getInstance().play(1);
-                    AppManager.getInstance().getGameView().changeGameState(SettingState.getInstance());
+                SoundManager.getInstance().play(4);
+                AppManager.getInstance().getGameView().changeGameState(SettingState.getInstance());
             }
             else if (r_exit.contains(x, y))
             {
-//                    SoundManager.getInstance().play(1);
-                    System.exit(0);
+                SoundManager.getInstance().play(4);
+                System.exit(0);
             }
         }
         return true;

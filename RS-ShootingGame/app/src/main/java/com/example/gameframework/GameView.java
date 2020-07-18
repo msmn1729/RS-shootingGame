@@ -24,6 +24,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         AppManager.getInstance().setGameView(this);
         AppManager.getInstance().setResources(getResources());
 
+        SoundManager.getInstance().Init(context);//초기화
+        //효과음 HashMap에 저장
+        SoundManager.getInstance().addSound(1,R.raw.eff_missile1);
+        SoundManager.getInstance().addSound(2,R.raw.eff_missile2);
+        SoundManager.getInstance().addSound(3,R.raw.eff_missile3);
+        SoundManager.getInstance().addSound(4,R.raw.eff_click);
+        SoundManager.getInstance().addSound(5,R.raw.eff_kill);
+        SoundManager.getInstance().addSound(6,R.raw.eff_over);
+        SoundManager.getInstance().addSound(7,R.raw.eff_hurt);
+        SoundManager.getInstance().addSound(8,R.raw.eff_rano);//랜덤 버프
+        SoundManager.getInstance().addSound(9,R.raw.eff_ranx);//랜덤 디버프
+        //SoundManager.getInstance().addSound(10,R.raw.eff_rank);
+        //rank에서 효과음을 넣고 싶었는데 프로그램이 자꾸 종료가 되어서
+        //재생이 되는지 안되는지 알수가 없습니다....따라서 일단 뺄게요
+        SoundManager.getInstance().addMusic(R.raw.bgm);
+
         changeGameState(new ReadyState());
         getHolder().addCallback(this);
 

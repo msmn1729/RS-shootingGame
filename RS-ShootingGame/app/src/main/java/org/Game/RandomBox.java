@@ -29,6 +29,7 @@ public class RandomBox extends SpriteAnimation {
         m_y += speed;
     }
 
+    
     public void Update(long gameTime){
         super.Update(gameTime);
         m_BoundBox.set(m_x, m_y, m_x + 100, m_y + 100);

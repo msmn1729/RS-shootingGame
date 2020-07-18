@@ -23,8 +23,7 @@ public class RandomBox extends SpriteAnimation {
         this.initSpriteData(100,100,1,1);
         speed = 3.0f;
     }
-
-
+    
     void move(){
         m_y += speed;
     }

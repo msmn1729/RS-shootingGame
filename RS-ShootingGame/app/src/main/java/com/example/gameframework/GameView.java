@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 import org.Game.ReadyState;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    //test
     private IState m_state;
     private GameViewThread m_thread;
 //    private GraphicObject m_Image;

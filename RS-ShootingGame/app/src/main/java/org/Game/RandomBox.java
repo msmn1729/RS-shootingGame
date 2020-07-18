@@ -1,6 +1,7 @@
 package org.Game;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.example.gameframework.SpriteAnimation;
@@ -24,13 +25,22 @@ public class RandomBox extends SpriteAnimation {
         speed = 3.0f;
     }
 
+    @Override
+    public void Draw(Canvas canvas) {
+        super.Draw(canvas);
+    }
+
+    @Override
+    public void Update(long gameTIme) {
+        super.Update(gameTIme);
+        move();
+    }
+
     void move(){
         m_y += speed;
     }
 
-    public void Update(long gameTime){
-        super.Update(gameTime);
-        m_BoundBox.set(m_x, m_y, m_x + 100, m_y + 100);
+    public void Update(){
         if(m_y > 1800)
             state = STATE_OUT;
     }

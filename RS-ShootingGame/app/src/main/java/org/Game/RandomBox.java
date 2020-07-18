@@ -14,17 +14,15 @@ public class RandomBox extends SpriteAnimation {
 
     protected int boxtype;
 
-    Rect m_BoundBox = new Rect();
+    protected Rect m_BoundBox = new Rect();
     long LastShoot = System.currentTimeMillis();
 
-    protected float speed;
+    int speed;
 
     public RandomBox(Bitmap bitmap){
         super(bitmap);
-        this.initSpriteData(100,100,1,1);
-        speed = 3.0f;
     }
-    
+
 
 <<<<<<< HEAD
 =======
@@ -44,8 +42,26 @@ public class RandomBox extends SpriteAnimation {
         m_y += speed;
     }
 
+<<<<<<< HEAD
     public void Update(){
         if(m_y > 1800)
             state = STATE_OUT;
+=======
+    public void Update()
+    {
+        if(m_y>1800)
+            state=STATE_OUT;
+    }
+
+    @Override
+    public void Draw(Canvas canvas) {
+        super.Draw(canvas);
+    }
+
+    @Override
+    public void Update(long gameTIme) {
+        super.Update(gameTIme);
+        move();
+>>>>>>> 8d8ef0de249013aa8e97ef05cdc0228d85744ef5
     }
 }

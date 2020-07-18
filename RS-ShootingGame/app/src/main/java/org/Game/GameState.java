@@ -27,13 +27,17 @@ public class GameState implements IState {
 
 
     long PlayerMissile = System.currentTimeMillis();
+    long LastRegenBox = System.currentTimeMillis();
 
     Random randEnem = new Random();
+    Random randomBox = new Random();//랜덤 함수
+
+    int width = AppManager.getInstance().getGameView().getDisplay().getWidth();//너비측정
 
     ArrayList<Enemy> m_enemlist = new ArrayList<Enemy>();//적
     public ArrayList<Missile_Player> m_pmslist = new ArrayList<Missile_Player>();//미사일 위치
     ArrayList<Missile> m_enemmslist = new ArrayList<Missile>();
-    ArrayList<RandomBox> random = new ArrayList<RandomBox>();//랜덤 박스
+    ArrayList<RandomBox> m_randomboxList = new ArrayList<RandomBox>();//랜덤 박스
 
     long LastRegenEnemy = System.currentTimeMillis();
 
@@ -47,15 +51,6 @@ public class GameState implements IState {
         playertype = 3;
     }
 
-    public void makeRandomBox(){
-        if(System.currentTimeMillis() - LastRegenEnemy >= 1000) {
-            LastRegenEnemy = System.currentTimeMillis();
-
-            RandomBox ran = new RandomBox(AppManager.getInstance().getBitmap(R.drawable.randombox));
-            ran.setPosition(randEnem.nextInt(1000), -60);
-            random.add(ran);
-        }
-    }
 
     public void makeEnemy(){
 
@@ -127,13 +122,14 @@ public class GameState implements IState {
             if(enemms.state == Missile.STATE_OUT)
                 m_enemmslist.remove(i);
         }
-//        for(int i = random.size() - 1; i>=0; i--){
-//            RandomBox rann = random.get(i);
-//            rann.Update(GameTime);
-//            if(rann.state == Missile.STATE_OUT)
-//                random.remove(i);
-//        }
-//        makeRandomBox();
+        //랜덤 박스 업데이트 및 상태 확인
+        for (int k = m_randomboxList.size() - 1; k >= 0; k--) {
+            m_randomboxList.get(k).Update(GameTime);
+            if (m_randomboxList.get(k).state == RandomBox.STATE_OUT)
+                m_randomboxList.remove(k);
+        }
+
+        MakeRandomBox();
         makeEnemy();
         MakePlayerMissile();
         CheckCollision();
@@ -150,8 +146,9 @@ public class GameState implements IState {
         for(Enemy enem : m_enemlist){
             enem.Draw(canvas);
         }
-//        for(RandomBox randomBoxes : random)
-//             randomBoxes.Draw(canvas);
+        for (RandomBox randomBox : m_randomboxList)
+            randomBox.Draw(canvas);
+
         m_player.Draw(canvas);
         m_keypad.Draw(canvas);
 
@@ -183,7 +180,7 @@ public class GameState implements IState {
         return true;
     }
 
-    //모든적을 제거
+    //모든적, 랜덤박스 제거
     public void allclear(){
         for(int i = m_pmslist.size() - 1; i>= 0; i--){
             m_pmslist.remove(i);
@@ -195,6 +192,9 @@ public class GameState implements IState {
 
         for(int i = m_enemmslist.size()-1;i>=0;i--){
             m_enemmslist.remove(i);
+        }
+        for(int i = m_randomboxList.size()-1;i>=0;i--){
+            m_randomboxList.remove(i);
         }
     }
 
@@ -245,6 +245,30 @@ public class GameState implements IState {
 
     }
 
+    public void MakeRandomBox()// 랜덤 박스 생성
+    {
+            if (System.currentTimeMillis() - LastRegenBox >= 2500) {
+                LastRegenBox = System.currentTimeMillis();
+
+                RandomBox m_randomBox = null;
+                int boxType = randomBox.nextInt(8);
+                boxType = 4;
+
+                if (boxType == 4)
+                    m_randomBox = new RandomBox_plusLife(); // 플레이어 목숨 수
+
+//                else if (boxType == 1)
+//                    m_randomBox = new RandomBox_MissileRegenSpeed();// 미사일 리젠 속도
+//
+//                else if (boxType == 2)
+//                    m_randomBox = new RandomBox_MIssileSpeed();// 플레이어 미사일 속도
+
+                m_randomBox.setPosition(160 + (int)randomBox.nextInt(width - 320), -60); // 랜덤 박스 위치
+                m_randomboxList.add(m_randomBox);
+
+            }
+    }
+
     public void CheckCollision(){
         for(int i = m_pmslist.size() - 1; i>= 0; i--){
             for(int j = m_enemlist.size() - 1; j>=0; j--){
@@ -273,6 +297,44 @@ public class GameState implements IState {
                 m_enemmslist.remove(i);
                 m_player.destroyPlayer();
                 if(m_player.getLife() <= 0) AppManager.getInstance().getGameView().changeGameState(ExitState.getInstance());
+            }
+        }
+
+        //랜덤박스충돌
+        for (int i = m_randomboxList.size() - 1; i >= 0; i--) {
+            if (CollisionManager.CheckBoxToBox(m_player.m_BoundBox, m_randomboxList.get(i).m_BoundBox)) {
+                if(m_randomboxList.get(i).boxtype == 4) {//생명증가
+                    m_randomboxList.remove(i);
+                    m_player.addLife();
+                }
+//                if (m_randomboxList.get(i).BoxType == 1)// hp회복
+//                {
+//                    if(subcnt<3) {
+//                        subcnt++; // 서브 미사일 횟수 증가
+//                    }
+//                    m_randomboxList.remove(i);
+//                    m_player.addLife();
+//                    AppManeger.getInstance().getGameView().viberator();
+//                } else if (m_randomboxList.get(i).BoxType == 2)// 플레이어 미사일 속도
+//                {
+//                    if(subcnt<3) {
+//                        subcnt++; // 서브 미사일 횟수 증가
+//                    }
+//
+//                    player_missile_speed += 15;
+//                    m_randomboxList.remove(i);
+//                    AppManeger.getInstance().getGameView().viberator();
+//                } else if (m_randomboxList.get(i).BoxType == 3)// 미사일 리젠 속도
+//                {
+//                    if(subcnt<3) {
+//                        subcnt++; // 서브 미사일 횟수 증가
+//                    }
+//
+//                    player_missile_regen_speed -= 10;// 0.01초 감소
+//                    m_randomboxList.remove(i);
+//                    AppManeger.getInstance().getGameView().viberator();
+//                }
+                return;
             }
         }
     }

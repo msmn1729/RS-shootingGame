@@ -24,7 +24,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         AppManager.getInstance().setGameView(this);
         AppManager.getInstance().setResources(getResources());
-
+        
         SoundManager.getInstance().Init(context);//초기화
         //효과음 HashMap에 저장
         SoundManager.getInstance().addSound(1,R.raw.eff_missile1);

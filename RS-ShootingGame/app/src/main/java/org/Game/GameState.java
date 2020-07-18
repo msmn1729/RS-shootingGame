@@ -335,6 +335,7 @@ public class GameState implements IState {
 //                    AppManeger.getInstance().getGameView().viberator();
 //                }
                 return;
+                
             }
         }
     }

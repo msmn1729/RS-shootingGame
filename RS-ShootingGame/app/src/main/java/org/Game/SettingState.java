@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.R;
+import com.example.gameframework.SoundManager;
+
 public class SettingState implements IState {
 
     int backflag = 1;
@@ -95,6 +97,7 @@ public class SettingState implements IState {
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int)event.getX();
         int y = (int)event.getY();
+        SoundManager.getInstance().play(4);
 
         //배경음 켜짐
         if(x > 400 && x < 550 && y > 500 && y < 650){
@@ -133,54 +136,6 @@ public class SettingState implements IState {
             AppManager.getInstance().getGameView().changeGameState(ReadyState.getInstance());
         }
 
-        //버튼 범위설정
-//        Rect bg_sound1 = new Rect(400,400,430,430);
-//        Rect bg_sound2 = new Rect(400,400,430,430);
-//        Rect ef_sound1 = new Rect(400,1200,430,1230);
-//        Rect ef_sound2 = new Rect(800,1200,830,1230);
-//        Rect btn = new Rect(600,1400,650, 1450);
-//
-//
-//        if(event.getAction() == MotionEvent.ACTION_DOWN){
-//            if(bg_sound1.contains(x,y)){
-//                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    SoundManager.getInstance().playBackground1();
-//
-//                    //Toast.makeText(getApplicationContext(), "배경음 체크됨",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//            else if(bg_sound2.contains(x,y)) {
-//                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    SoundManager.getInstance().stopBackground1();
-//                    // Toast.makeText(getApplicationContext(), "배경음 체크해제",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            else if(ef_sound1.contains(x,y))
-//            {
-//                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    SoundManager.getInstance().play(10);
-//                    // Toast.makeText(getApplicationContext(), "효과음 체크됨",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//            else if (ef_sound2.contains(x, y))
-//            {
-//                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//                    SoundManager.getInstance().offplay();
-//                    // Toast.makeText(getApplicationContext(), "효과음 체크해제",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//            else if (btn.contains(x, y))
-//            {
-//                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//
-//                    AppManager.getInstance().getGameView().changeGameState(ReadyState.getInstance());
-//                    // Intent intent = new Intent(getApplicationContext(), ReadyState.class);
-//                    // startActivity(intent);
-//
-//                }
-//            }
-//        }
         return true;
     }
 }

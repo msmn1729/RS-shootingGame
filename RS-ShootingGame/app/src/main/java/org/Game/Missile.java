@@ -10,6 +10,8 @@ public class Missile extends GraphicObject {
     public static final int STATE_OUT = 1;
     public int state = STATE_NORMAL;
 
+    int speed;
+
     Rect m_BoundBox = new Rect();
 
     public Missile(Bitmap bitmap) {

@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.R;
+import com.example.gameframework.SoundManager;
 
 public class ExitState implements IState {
 
@@ -27,6 +28,8 @@ public class ExitState implements IState {
 
     @Override
     public void Init() {
+        SoundManager.getInstance().play(6);
+        SoundManager.getInstance().pauseMusic(R.raw.bgm);
         m_background = new BackGround(2);
         gameover = AppManager.getInstance().getBitmap(R.drawable.gameover);
     }

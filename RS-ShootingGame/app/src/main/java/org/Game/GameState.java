@@ -23,7 +23,7 @@ public class GameState implements IState {
     private GraphicObject m_keypad;
     int playertype;
     int killcnt = 0;
-    int specialSkill = 3;
+    int specialSkill = 10;
     int missileSpeed = 30;
 
 
@@ -37,8 +37,8 @@ public class GameState implements IState {
 
     ArrayList<Enemy> m_enemlist = new ArrayList<Enemy>();//적
     public ArrayList<Missile_Player> m_pmslist = new ArrayList<Missile_Player>();//미사일 위치
+    public ArrayList<Skill1_SuperMissile> m_skilllist = new ArrayList<Skill1_SuperMissile>();//미사일 위치
     ArrayList<Missile> m_enemmslist = new ArrayList<Missile>();
-
 
     long LastRegenEnemy = System.currentTimeMillis();
 
@@ -81,6 +81,7 @@ public class GameState implements IState {
         //게임시작시 모든 적을 제거, 죽인 수 초기화 후 진행
         allclear();
         killcnt = 0;
+        specialSkill = 10;
 
         if (playertype == 0) {
             m_player = new Player(AppManager.getInstance().getBitmap(R.drawable.air1));
@@ -104,6 +105,13 @@ public class GameState implements IState {
         long GameTime = System.currentTimeMillis();
         m_player.Update(GameTime);
         m_background.Update(GameTime);
+
+        //필살기 한 번만
+        for (int i = m_skilllist.size() - 1; i >= 0; i--) {
+            Skill1_SuperMissile skill = m_skilllist.get(i);
+            skill.Update();
+            if (skill.state == Missile.STATE_OUT) m_skilllist.remove(i);
+        }
 
         for (int i = m_pmslist.size() - 1; i >= 0; i--) {
             Missile_Player pms = m_pmslist.get(i);
@@ -134,6 +142,8 @@ public class GameState implements IState {
         m_background.Draw(canvas);
         for (Missile_Player pms : m_pmslist)
             pms.Draw(canvas);
+        for (Skill1_SuperMissile skill : m_skilllist)
+            skill.Draw(canvas);
         for (Missile enemms : m_enemmslist)
             enemms.Draw(canvas);
         for (Enemy enem : m_enemlist) {
@@ -144,12 +154,12 @@ public class GameState implements IState {
         m_keypad.Draw(canvas);
 
         Paint p = new Paint();
-        p.setTextSize(50);
+        p.setTextSize(60);
         p.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         p.setColor(Color.BLACK);
         canvas.drawText("생명 " + String.valueOf(m_player.getLife()), 100, 100, p);
-        canvas.drawText("적 처치 " + String.valueOf(killcnt), 700, 100, p);
-        canvas.drawText("필살기 " + String.valueOf(specialSkill), 700, 1600, p);
+        canvas.drawText("적 처치 " + String.valueOf(killcnt), 750, 100, p);
+        canvas.drawText("필살기 " + String.valueOf(specialSkill), 750, 1600, p);
     }
 
     @Override
@@ -158,21 +168,36 @@ public class GameState implements IState {
         int y = m_player.getY();
 
         //방향 움직일 때 위치 변경
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)
-            m_player.setPosition(x - 20, y);
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)
-            m_player.setPosition(x + 20, y);
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP)
-            m_player.setPosition(x, y - 20);
-        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
-            m_player.setPosition(x, y + 20);
+//        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)
+//            m_player.setPosition(x - 20, y);
+//        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT)
+//            m_player.setPosition(x + 20, y);
+//        if (keyCode == KeyEvent.KEYCODE_DPAD_UP)
+//            m_player.setPosition(x, y - 20);
+//        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
+//            m_player.setPosition(x, y + 20);
+        if (keyCode == KeyEvent.KEYCODE_SPACE) //필살기키
+        {
+            if (specialSkill > 0) {
+                specialSkill--;
+                if (playertype == 0) {
+                    //allclear();
+                    MakeSkill1_SuperMissile();
+                } else if (playertype == 1) {
+
+                } else if (playertype == 2) {
+
+                }
+            }
+
+        }
 //        if(keyCode == KeyEvent.KEYCODE_SPACE)
 //            m_pmslist.add(new Missile_Player(x + 10, y));
 
         return true;
     }
 
-    //모든적, 랜덤박스 제거
+    //모든적 제거
     public void allclear() {
         for (int i = m_pmslist.size() - 1; i >= 0; i--) {
             m_pmslist.remove(i);
@@ -188,10 +213,16 @@ public class GameState implements IState {
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
+        System.out.println("x : " + x + "y : " + y);
+        int difX = Math.abs(x - m_player.getX());
+        int difY = Math.abs(y - m_player.getY());
+        if(difX < 250 && difY < 250) m_player.setPosition(x-90, y-90); //터치
+
 
         Rect rt = new Rect();
 
@@ -219,6 +250,19 @@ public class GameState implements IState {
         return true;
     }
 
+
+    //필살기 스킬1
+    public void MakeSkill1_SuperMissile()
+    {
+        //화면 중간 아래에서부터 미사일 시작
+        Skill1_SuperMissile skill = new Skill1_SuperMissile(0, 1800, 500);// 미사일 위치,위치,속도
+
+        // 플레이어 미사일 list에 추가
+        m_skilllist.add(skill);
+        SoundManager.getInstance().play(1);
+
+    }
+
     public void MakePlayerMissile()// 미사일을 생성
     {
         //미사일이 1초마다 나감
@@ -236,6 +280,38 @@ public class GameState implements IState {
 
 
     public void CheckCollision() {
+        //필살기충돌
+        for (int i = m_skilllist.size() - 1; i >= 0; i--) {
+            for (int j = m_enemlist.size() - 1; j >= 0; j--) {
+                if (CollisionManager.CheckBoxToBox(m_skilllist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
+                    //m_skilllist.remove(i);
+                    m_enemlist.remove(j);
+
+                    System.out.println(j+" 적기 삭제");
+                    //SoundManager.getInstance().play(5);
+                    killcnt++;
+
+                    return;
+                }
+            }
+        }
+        for (int i = m_skilllist.size() - 1; i >= 0; i--) {
+            for (int j = m_enemmslist.size() - 1; j >= 0; j--) {
+                if (CollisionManager.CheckBoxToBox(m_skilllist.get(i).m_BoundBox, m_enemmslist.get(j).m_BoundBox)) {
+                    //m_skilllist.remove(i);
+                    m_enemmslist.remove(j);
+
+                    System.out.println(j+" 적 미사일 삭제");
+                    //SoundManager.getInstance().play(5);
+                    //killcnt++;
+
+                    return;
+                }
+            }
+        }
+
+        /////////////////////////
+
         for (int i = m_pmslist.size() - 1; i >= 0; i--) {
             for (int j = m_enemlist.size() - 1; j >= 0; j--) {
                 if (CollisionManager.CheckBoxToBox(m_pmslist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {

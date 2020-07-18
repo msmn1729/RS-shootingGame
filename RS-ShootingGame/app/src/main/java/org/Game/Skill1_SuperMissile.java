@@ -13,7 +13,7 @@ public class Skill1_SuperMissile extends Missile {
 
     public void Update(){
         m_y -= 10;
-        if(m_y < -1500)state = STATE_OUT; //미사일 끝까지
+        if(m_y < -1800)state = STATE_OUT; //미사일 끝까지
 
         m_BoundBox.left = m_x;
         m_BoundBox.top = m_y;

@@ -5,7 +5,7 @@ import com.example.gameframework.R;
 
 public class Missile_Player extends Missile {
     public Missile_Player(int x, int y, int speed) {
-        super(AppManager.getInstance().getBitmap(R.drawable.explosion));
+        super(AppManager.getInstance().getBitmap(R.drawable.missile_1));
         this.setPosition(x, y);
         this.speed = speed;
 }

@@ -13,13 +13,15 @@ public class Player extends SpriteAnimation {
 
     public Player(Bitmap bitmap) {
         super(bitmap);
-        this.initSpriteData(197, 290, 3, 6);
+        this.initSpriteData(197, 290, 5, 6);
         this.setPosition(500, 1400);
     }
 
     public void Update(long gameTime){
         super.Update(gameTime);
-        m_BoundBox.set(m_x, m_y, m_x + 197, m_y + 290);
+//        m_BoundBox.set(m_x, m_y, m_x + 197, m_y + 290);
+        m_BoundBox.set(m_x+125, m_y+100, m_x + 145, m_y + 200); //플레이어 판정
+        //System.out.println("x : " + m_x + "y : " + m_y);
     }
 
     public int getLife(){

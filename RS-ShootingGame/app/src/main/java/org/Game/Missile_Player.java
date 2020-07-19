@@ -8,7 +8,7 @@ public class Missile_Player extends Missile {
         super(AppManager.getInstance().getBitmap(R.drawable.missile_1));
         this.setPosition(x, y);
         this.speed = speed;
-}
+    }
 
     public void Update(){
         m_y -= 30;
@@ -16,7 +16,7 @@ public class Missile_Player extends Missile {
 
         m_BoundBox.left = m_x;
         m_BoundBox.top = m_y;
-        m_BoundBox.right = m_x + 143;
-        m_BoundBox.bottom = m_y + 143;
+        m_BoundBox.right = m_x + 133;
+        m_BoundBox.bottom = m_y + 133;
     }
 }

@@ -13,24 +13,20 @@ public class Player extends SpriteAnimation {
 
     public Player(Bitmap bitmap) {
         super(bitmap);
-        this.initSpriteData(162, 270, 3, 1);
+        this.initSpriteData(197, 290, 3, 6);
         this.setPosition(500, 1400);
     }
 
     public void Update(long gameTime){
         super.Update(gameTime);
-
-//        if(Move){
-//            this.m_x += _dirX;
-//            this.m_y += _dirY;
-//        }
-        m_BoundBox.set(m_x, m_y, m_x + 162, m_y + 160);
+        m_BoundBox.set(m_x, m_y, m_x + 197, m_y + 290);
     }
 
     public int getLife(){
         return m_Life;
     }
     public void addLife(){
+        SoundManager.getInstance().play(10);
         m_Life++;
     }
     public void destroyPlayer()

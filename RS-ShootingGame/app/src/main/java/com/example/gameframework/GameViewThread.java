@@ -26,8 +26,9 @@ public class GameViewThread extends Thread {
             _canvas = null;
             try{//SurFaceHolder를 통해 Surface에 접근해서 가져옴
                 m_gameView.Update();
-                _canvas = m_surfaceHolder.lockCanvas(null);
                 synchronized (m_surfaceHolder){
+                    _canvas = m_surfaceHolder.lockCanvas(null);
+                    if (_canvas == null) break;
                     m_gameView.onDraw(_canvas);
                 }
             }finally {

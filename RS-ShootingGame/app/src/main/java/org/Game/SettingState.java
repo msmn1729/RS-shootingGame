@@ -2,6 +2,7 @@ package org.Game;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.KeyEvent;
@@ -40,13 +41,21 @@ public class SettingState implements IState {
 
         back = new BackGround(2);
 
-        bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+        if(backflag==1) {
+            bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+            bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+        }else if(backflag==0){
+            bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+            bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+        }
 
-        bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-
-        ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-
-        ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+        if(effectflag==1) {
+            ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+            ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+        }else if(effectflag==0){
+            ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+            ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+        }
 
         btn = AppManager.getInstance().getBitmap(R.drawable.complete);
     }
@@ -69,6 +78,7 @@ public class SettingState implements IState {
         back.Draw(canvas);
         Paint p=new Paint();//화면 상단에 캐릭터 선택하라는 문구를 띄움
         p.setTextSize(80);
+        p.setColor(Color.WHITE);
 
         canvas.drawText("배경음",200,400, p);
         canvas.drawText("효과음",200,800, p);
@@ -79,12 +89,22 @@ public class SettingState implements IState {
         canvas.drawText("on", 420, 1100, p);
         canvas.drawText("off", 810, 1100, p);
 
-        canvas.drawBitmap(bg_sound1, 400,500, null);
-        canvas.drawBitmap(bg_sound2,800, 510, null);
-
-        canvas.drawBitmap(ef_sound1, 400,900, null);
-        canvas.drawBitmap(ef_sound2,800, 910, null);
-
+        if(backflag == 1) {
+            canvas.drawBitmap(bg_sound1, 400, 500, null);
+            canvas.drawBitmap(bg_sound2, 800, 510, null);
+        }
+        else{
+            canvas.drawBitmap(bg_sound1, 410, 510, null);
+            canvas.drawBitmap(bg_sound2, 790, 500, null);
+        }
+        if(effectflag == 1) {
+            canvas.drawBitmap(ef_sound1, 400, 900, null);
+            canvas.drawBitmap(ef_sound2, 800, 910, null);
+        }
+        else{
+            canvas.drawBitmap(ef_sound1, 410, 910, null);
+            canvas.drawBitmap(ef_sound2, 790, 900, null);
+        }
         canvas.drawBitmap(btn, 330, 1200, null);
     }
 
@@ -101,38 +121,41 @@ public class SettingState implements IState {
 
         //배경음 켜짐
         if(x > 400 && x < 550 && y > 500 && y < 650){
+            SoundManager.getInstance().play(4);
             backflag = 1;
-            bg_sound1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnon),bg_sound1.getWidth(), bg_sound1.getHeight(), true);
-
-            bg_sound2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnoff1),bg_sound2.getWidth(), bg_sound2.getHeight(), true);
+            bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+            bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+            SoundManager.getInstance().startMusic(R.raw.bgm);
         }
         //배경음 꺼짐
         if(x > 800 && x < 950 && y > 510 && y < 660){
+            SoundManager.getInstance().play(4);
             backflag = 0;
-
-            bg_sound1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnoff1),bg_sound1.getWidth(), bg_sound1.getHeight(), true);
-
-            bg_sound2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnon),bg_sound2.getWidth(), bg_sound2.getHeight(), true);
+            bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+            bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+            SoundManager.getInstance().stopMusic(R.raw.bgm);
         }
-
         //효과음 켜짐
         if(x > 400 && x < 550 && y > 900 && y < 1050){
+            SoundManager.getInstance().play(4);
             effectflag = 1;
 
-            ef_sound1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnon),ef_sound1.getWidth(), ef_sound1.getHeight(), true);
-
-            ef_sound2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnoff1),ef_sound2.getWidth(), ef_sound2.getHeight(), true);
+            ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+            ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+            SoundManager.getInstance().onsound();
         }
-
+        //효과음 꺼짐
         if(x > 800 && x < 950 && y > 900 && y < 1050){
+            SoundManager.getInstance().play(4);
             effectflag = 0;
 
-            ef_sound1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnoff1),ef_sound1.getWidth(), ef_sound1.getHeight(), true);
-
-            ef_sound2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.btnon),ef_sound2.getWidth(), ef_sound2.getHeight(), true);
+            ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+            ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+            SoundManager.getInstance().offsound();
         }
 
         if(x > 330 && x < 700 && y > 1200 && y < 1350){
+            SoundManager.getInstance().play(4);
             AppManager.getInstance().getGameView().changeGameState(ReadyState.getInstance());
         }
 

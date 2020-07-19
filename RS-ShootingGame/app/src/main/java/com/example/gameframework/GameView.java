@@ -8,40 +8,43 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import org.Game.RankState;
 import org.Game.ReadyState;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    //test
     private IState m_state;
     private GameViewThread m_thread;
-//    private GraphicObject m_Image;
-//    private SpriteAnimation m_spr;
+    public static SurfaceHolder sfh;
 
-    public GameView(Context context) {
+    public GameView(Context context, int flag) {
         super(context);
+        sfh = getHolder();
         //키 입력 처리를 받기 위해
         setFocusable(true);
 
         AppManager.getInstance().setGameView(this);
         AppManager.getInstance().setResources(getResources());
-        
+
         SoundManager.getInstance().Init(context);//초기화
         //효과음 HashMap에 저장
-        SoundManager.getInstance().addSound(1,R.raw.eff_missile1);
-        SoundManager.getInstance().addSound(2,R.raw.eff_missile2);
-        SoundManager.getInstance().addSound(3,R.raw.eff_missile3);
+        SoundManager.getInstance().addSound(1,R.raw.eff_missile1);//플레이어 미사일발사
+        SoundManager.getInstance().addSound(2,R.raw.eff_rank); //랭크입력시
+        SoundManager.getInstance().addSound(3, R.raw.eff_special);//필살기음
         SoundManager.getInstance().addSound(4,R.raw.eff_click);
         SoundManager.getInstance().addSound(5,R.raw.eff_kill);
         SoundManager.getInstance().addSound(6,R.raw.eff_over);
         SoundManager.getInstance().addSound(7,R.raw.eff_hurt);
         SoundManager.getInstance().addSound(8,R.raw.eff_rano);//랜덤 버프
         SoundManager.getInstance().addSound(9,R.raw.eff_ranx);//랜덤 디버프
-        //SoundManager.getInstance().addSound(10,R.raw.eff_rank);
-        //rank에서 효과음을 넣고 싶었는데 프로그램이 자꾸 종료가 되어서
-        //재생이 되는지 안되는지 알수가 없습니다....따라서 일단 뺄게요
+        SoundManager.getInstance().addSound(10,R.raw.eff_life);
+
         SoundManager.getInstance().addMusic(R.raw.bgm);
 
-        changeGameState(new ReadyState());
+        if(flag==1){
+            changeGameState(new ReadyState());
+        }else if(flag==2){
+            changeGameState(new RankState());
+        }
         getHolder().addCallback(this);
 
         m_thread = new GameViewThread(getHolder(), this);

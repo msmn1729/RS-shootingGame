@@ -3,11 +3,7 @@ package org.Game;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import com.example.gameframework.AppManager;
-import com.example.gameframework.R;
 import com.example.gameframework.SpriteAnimation;
-
-import static com.example.gameframework.AppManager.*;
 
 public class Enemy extends SpriteAnimation {
     protected int hp;
@@ -33,10 +29,6 @@ public class Enemy extends SpriteAnimation {
 
     void move(){
         if(movetype == MOVE_PATTERN_1){
-            //폭발 스프라이트 테스트
-            //getInstance().getBitmap(R.drawable.sprite_explosion);
-//            this.initSpriteData(209, 195, 10, 6);
-
             if(m_y <= 500){
                 m_y += speed;
             }
@@ -59,11 +51,7 @@ public class Enemy extends SpriteAnimation {
                 m_y += speed;
             }
         }
-        if(m_y > 1800)
-        {
-
-            state = STATE_OUT;
-        }
+        if(m_y > 1800) state = STATE_OUT;
     }
 
     void attack(){
@@ -76,8 +64,7 @@ public class Enemy extends SpriteAnimation {
 
     public void Update(long GameTime){
         super.Update(GameTime);
-        attack(); //이게먼저
+        attack();
         move();
-        //attack();
     }
 }

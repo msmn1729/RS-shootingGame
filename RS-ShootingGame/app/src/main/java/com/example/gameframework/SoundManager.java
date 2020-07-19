@@ -18,6 +18,8 @@ public class SoundManager {
     private MediaPlayer m_BGM;
 
     int m_SoundPoolCount=0;
+    int poolflag = 1;
+    int bgmflag = 1;
 
     //싱글톤 객체 생성 및 리턴
     public static SoundManager getInstance(){
@@ -49,33 +51,48 @@ public class SoundManager {
     public void pauseMusic(int _MusicID){
         m_BGM.pause();
     }
+    public void stopMusic(int _MusicID){
+        m_BGM.stop();
+        bgmflag=0;
+    }
+
+    public void startMusic(int _MusicID){
+        if(bgmflag==0){
+            bgmflag=1;
+            addMusic(_MusicID);
+        }
+    }
+    public void playMusic(int _MusicID){
+        if(bgmflag==1)
+            m_BGM.start();
+    }
+
 
     public void addSound(int _index, int _soundID){
         //효과음를 로드 시키고
         int id = m_SoundPool.load(m_Activity, _soundID, 1);
         m_SoundPoolMap.put(_index, id);//해시맵에 아이디 값을 받아온 인덱스 저장
         m_SoundPoolCount++;
+        poolflag = 1;
     }
 
     public void offsound() {
         //효과음 정지
         for(int i = 0;i<m_SoundPoolCount+1;i++)
             m_SoundPool.stop(i);
+        poolflag = 0;
+    }
+    public void onsound() {
+        poolflag=1;
     }
 
     public void play(int _index){
         //재생
         float streamVolume = m_AudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         streamVolume = streamVolume / m_AudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        m_SoundPool.play((Integer)m_SoundPoolMap.get(_index), streamVolume, streamVolume, 1 ,0, 1f);
+        if(poolflag==1)
+            m_SoundPool.play((Integer)m_SoundPoolMap.get(_index), streamVolume, streamVolume, 1 ,0, 1f);
     }
 
-    //ArrayList<Missile_Player> m_pmslist = new ArrayList<Missile_Player>( );
 
-    public void playLooped(int _index){
-        //음악반복재생
-        float streamVolume = m_AudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        streamVolume = streamVolume / m_AudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        m_SoundPool.play((Integer)m_SoundPoolMap.get(_index), streamVolume, streamVolume, 1 ,-1, 1f);
-    }
 }

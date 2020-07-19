@@ -105,7 +105,7 @@ public class ReadyState implements IState {
             }
             else if(r_rank.contains(x,y)) {
                 SoundManager.getInstance().play(4);
-                AppManager.getInstance().getGameView().changeGameState(RankState.getInstance());
+                AppManager.getInstance().getGameView().changeGameState(new RankState());
             }
 
             else if(r_set.contains(x,y))

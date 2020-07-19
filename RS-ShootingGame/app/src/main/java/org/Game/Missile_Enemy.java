@@ -12,7 +12,7 @@ public class Missile_Enemy extends Missile {
 
     public void Update(){
         m_y+=20;
-        if(m_y > 1400)state = STATE_OUT;
+        if(m_y > 1500)state = STATE_OUT;
 
         m_BoundBox.set(m_x, m_y, m_x + 143, m_y + 143);
     }

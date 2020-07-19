@@ -341,30 +341,31 @@ public class GameState implements IState {
 //                                    rand.nextInt(1300)));
 //                        }
 //                    }, 1000);
-                    final int[] i = {0};
-                    final int[] tmp_y = {1000};
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (i[0] < 3) {
-                                Random rand = new Random();
-                                for (int j = 0; j < 5; j++) {
-                                    m_skill2_list.add(new Skill2_Enemy_Explosion(rand.nextInt(800),
-                                            rand.nextInt(1300)));
-//                                    m_skill2_list.add(new Skill2_Enemy_Explosion(rand.nextInt(80),
-//                                            tmp_y[0]));
-//                                    tmp_y[0] = tmp_y[0] -100;
+//                    final int[] i = {0};
+//                    final int[] tmp_y = {1000};
+//                    final Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (i[0] < 3) {
+//                                Random rand = new Random();
+//                                for (int j = 0; j < 5; j++)
+//                                {
+//                                    m_skill2_list.add(new Skill2_Enemy_Explosion(rand.nextInt(700),
+//                                            rand.nextInt(1300)));
+////                                    m_skill2_list.add(new Skill2_Enemy_Explosion(rand.nextInt(80),
+////                                            tmp_y[0]));
+////                                    tmp_y[0] = tmp_y[0] -100;
+//
+//                                }
+//                                allclear();
+//                                handler.postDelayed(this, 2000);
+//                                i[0]++;
+//                            }
+//                        }
+//                    }, 2000);
 
-                                }
-                                allclear();
-                                handler.postDelayed(this, 2000);
-                                i[0]++;
-                            }
-                        }
-                    }, 2000);
-
-//                    MakeSkill2_Explosion();
+                    MakeSkill2_Explosion();
 
                 } else if (playertype == 2) {
                     Skilltime = System.currentTimeMillis();
@@ -432,7 +433,6 @@ public class GameState implements IState {
         Rect r_down = new Rect(100, 1200, 200, 1300);
         Rect r_up = new Rect(100, 1400, 200, 1500);
 
-        //터치패드 구현
         //터치패드 구현
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (r_left.contains(x, y)) {
@@ -563,22 +563,12 @@ public class GameState implements IState {
 
     //필살기 스킬2
     public void MakeSkill2_Explosion() {
+        final Handler handler = new Handler();
         SoundManager.getInstance().play(3);
         for (int i = m_enemlist.size() - 1; i >= 0; i--) {
-            m_enemlist.remove(i);
             //이 부분이 폭발처리
-
-            final int finalI = i;
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(finalI).getX(),
-                            m_enemlist.get(finalI).getY()));
-                }
-            }, 1000);
-
-
+            m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(i).getX(),m_enemlist.get(i).getY()));
+            m_enemlist.remove(i);
         }
 
 //        //미사일까지 삭제하면 에러

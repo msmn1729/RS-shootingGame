@@ -31,10 +31,10 @@ public class RankState implements IState {
     private R_Back r_back;
     public static int realflag=1;
     int count=0;
-    String[] p_ID = new String[100];
-    String[] p_AirplaneType = new String[100];
-    String[] p_Score = new String[100];
-    String[] p_recordDate = new String[100];
+    String[] p_ID = new String[1000];
+    String[] p_AirplaneType = new String[1000];
+    String[] p_Score = new String[1000];
+    String[] p_recordDate = new String[1000];
     public RequestQueue mQueue;
 
     public RankState() {
@@ -125,7 +125,7 @@ public class RankState implements IState {
                             //"playerID""playerAirplaneType""playerScore""recordDate"
                             JSONArray jsonArray = response.getJSONArray("response");
                             String playerID,playerAirplaneType,playerScore,recordDate;
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                            for (int i = 0; i < jsonArray.length(); i++) { //수정
                                 JSONObject ranking = jsonArray.getJSONObject(i);
 
                                 playerID = ranking.getString("playerID");

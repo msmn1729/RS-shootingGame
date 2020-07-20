@@ -9,6 +9,7 @@ public class Skill2_Enemy_Explosion extends SpriteAnimation {
         //폭발 스프라이트 테스트완료
         super(AppManager.getInstance().getBitmap(R.drawable.sprite_explosion));
         this.initSpriteData(209, 195, 10, 6);
+        //this.initSpriteData(418, 390, 3, 6);
         m_x = x;
         m_y = y;
 

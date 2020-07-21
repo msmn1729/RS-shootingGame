@@ -1,12 +1,10 @@
 package org.Game;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.fonts.Font;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
@@ -20,10 +18,8 @@ import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
-import java.util.function.DoubleToIntFunction;
-import java.util.logging.LogRecord;
+
 
 import static com.example.gameframework.MainActivity.mcontext;
 
@@ -31,11 +27,11 @@ public class GameState implements IState {
     public Player m_player;
     private BackGround m_background;
     private GraphicObject m_keypad;
-    public static int playertype;
-    public Enemy m_enemy;
+    public static int playertype; //비행기 타입
+    //public Enemy m_enemy;
     private M_Circle m_circle;
 
-    public static int killcnt = 0;
+    public static int killcnt = 0; //적 처치수
 
     int missileSpeed;//미사일 발사 속도
     float nowMissileSpeed;//현재 발사 속도 나타내주는 변수
@@ -48,28 +44,26 @@ public class GameState implements IState {
     int score;
 
     long GameTime;
-    int fflag, a, b, startflag;
+    int fflag, startflag;
 
     long PlayerMissile = System.currentTimeMillis();
     long LastRegenBox = System.currentTimeMillis();
-    long Skill_delay_time = System.currentTimeMillis();
 
     Random randEnem = new Random();
     Random randomBox = new Random();//랜덤 함수
 
-    int width = AppManager.getInstance().getGameView().getDisplay().getWidth();//너비측정
+    //int width = AppManager.getInstance().getGameView().getDisplay().getWidth();//디바이스 너비
+    int width = AppManager.getInstance().getDeviceSize().x;
+    int height = AppManager.getInstance().getDeviceSize().y;
 
     ArrayList<Enemy> m_enemlist = new ArrayList<Enemy>();//적리스트
-    public ArrayList<Missile_Player> m_pmslist = new ArrayList<Missile_Player>();//미사일 리스트
+    ArrayList<Missile_Player> m_pmslist = new ArrayList<Missile_Player>();//미사일 리스트
     ArrayList<Missile_Player> m_lpmslist = new ArrayList<Missile_Player>();//왼쪽 미사일 리스트
     ArrayList<Missile_Player> m_rpmslist = new ArrayList<Missile_Player>();//오른쪽 미사일 리스트
     ArrayList<Missile> m_enemmslist = new ArrayList<Missile>();//적 미사일 리스트
     ArrayList<RandomBox> m_randomboxList = new ArrayList<RandomBox>();//랜덤 박스
-
-
-    //필살기2로 루프 중에 적기 삭제시 에러발생-해결
-    Iterator iter = m_enemlist.iterator();
-    public ArrayList<Skill1_SuperMissile> m_skilllist = new ArrayList<Skill1_SuperMissile>();//미사일 위치
+    //필살기1, 2 어레이리스트
+    ArrayList<Skill1_SuperMissile> m_skill1_list = new ArrayList<Skill1_SuperMissile>();//미사일 위치
     ArrayList<Skill2_Enemy_Explosion> m_skill2_list = new ArrayList<Skill2_Enemy_Explosion>(); //폭발할 적 리스트
 
     long LastRegenEnemy = System.currentTimeMillis();
@@ -84,9 +78,9 @@ public class GameState implements IState {
         playertype = 3;
     }
 
-
+    //적을 생성하는 메소드
     public void makeEnemy() {
-        if (System.currentTimeMillis() - LastRegenEnemy >= 700) { //적생성 주기
+        if (System.currentTimeMillis() - LastRegenEnemy >= 7000) { //적생성 주기(디폴트 값은 1000)
             LastRegenEnemy = System.currentTimeMillis();
 
             int enemytype = randEnem.nextInt(3);
@@ -99,8 +93,8 @@ public class GameState implements IState {
             else if (enemytype == 2)
                 enem = new Enemy_3();
 
-            enem.setPosition(randEnem.nextInt(1000), -60);
-            enem.movetype = randEnem.nextInt(3);
+            enem.setPosition(randEnem.nextInt(1000), -60); //적 생성위치 랜덤
+            enem.movetype = randEnem.nextInt(3); //적 움직임 패턴 랜덤
 
             m_enemlist.add(enem);
         }
@@ -130,7 +124,10 @@ public class GameState implements IState {
         m_keypad = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.keypad));
         m_circle = new M_Circle(AppManager.getInstance().getBitmap(R.drawable.circle_5));
         m_background = new BackGround(2);
-        m_keypad.setPosition(0, 1200);
+        //키패드 절대
+//        m_keypad.setPosition(0, (int) (AppManager.getInstance().getDeviceSize().y * 1200));
+        //키패드 상대
+        m_keypad.setPosition(0, (int) (AppManager.getInstance().getDeviceSize().y * 0.7));
     }
 
     @Override
@@ -151,9 +148,9 @@ public class GameState implements IState {
         }
 
         if (specialSkill > 3)
-            specialSkill = 3; //임시
+            specialSkill = 3; //필살기 최대 3개 소유가능
 
-        //최대 미사일 발사 속도 조절
+        //미사일 발사 속도 조절
         if (missileSpeed <= 0) {
             missileSpeed = 100;
             nowMissileSpeed = 0.1f;
@@ -196,10 +193,10 @@ public class GameState implements IState {
             AppManager.getInstance().getGameView().changeGameState(ExitState.getInstance());
 
         //필살기1 포문 한 번만 진행
-        for (int i = m_skilllist.size() - 1; i >= 0; i--) {
-            Skill1_SuperMissile skill1 = m_skilllist.get(i);
+        for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
+            Skill1_SuperMissile skill1 = m_skill1_list.get(i);
             skill1.Update();
-            if (skill1.state == Missile.STATE_OUT) m_skilllist.remove(i);
+            if (skill1.state == Missile.STATE_OUT) m_skill1_list.remove(i);
         }
         //필살기2
         for (int i = m_skill2_list.size() - 1; i >= 0; i--) {
@@ -238,15 +235,16 @@ public class GameState implements IState {
         Skill3();
     }
 
+    //캔버스에 그려주는 메소드
     @Override
     public void Render(Canvas canvas) {
 
         m_background.Draw(canvas);
-        if (missileState >= 2) {
+        if (missileState >= 2) { //좌측 보조 미사일
             for (Missile_Player lpms : m_lpmslist)
                 lpms.Draw(canvas);
         }
-        if (missileState == 3) {
+        if (missileState == 3) { //우측 보조 미사일
             for (Missile_Player rpms : m_rpmslist)
                 rpms.Draw(canvas);
         }
@@ -259,7 +257,7 @@ public class GameState implements IState {
                 enem.Draw(canvas);
             for (RandomBox randomBox : m_randomboxList)
                 randomBox.Draw(canvas);
-            for (Skill1_SuperMissile skill1 : m_skilllist)
+            for (Skill1_SuperMissile skill1 : m_skill1_list)
                 skill1.Draw(canvas);
             for (Skill2_Enemy_Explosion skill2 : m_skill2_list)
                 skill2.Draw(canvas);
@@ -271,35 +269,55 @@ public class GameState implements IState {
         m_player.Draw(canvas);
         m_keypad.Draw(canvas);
 
+        //필살기3을 그려줌
         if (startskill3 == 3) m_circle.Draw(canvas);
         Paint p = new Paint();
         p.setTextSize(70);
         p.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
+        //텍스트(절대좌표)
+//        if (m_player.getLife() == 1) {
+//            p.setColor(Color.RED);
+//            canvas.drawText("LIFE : " + String.valueOf(m_player.getLife()), 100, 100, p);
+//            p.setColor(Color.WHITE);
+//        } else {
+//            p.setColor(Color.WHITE);
+//            canvas.drawText("LIFE : " + String.valueOf(m_player.getLife()), 100, 100, p);
+//        }
+//        p.setTextAlign(Paint.Align.LEFT);
+//        canvas.drawText("KILL : " + String.valueOf(killcnt), 600, 200, p);
+//        p.setTextAlign(Paint.Align.LEFT);
+//        canvas.drawText("SCORE : " + String.valueOf(50 * killcnt), 600, 100, p);
+//        p.setTextSize((float) (width*0.05));
+//        canvas.drawText("발사 속도 " + String.format("%.1f", nowMissileSpeed), 100, 1700, p);
+//        canvas.drawText("필살기 " + String.valueOf(specialSkill), (float) (width*0.8), 1700, p);
+
+
+        //텍스트(상대좌표)
         if (m_player.getLife() == 1) {
             p.setColor(Color.RED);
-            canvas.drawText("LIFE : " + String.valueOf(m_player.getLife()), 100, 100, p);
+            canvas.drawText("LIFE : " + String.valueOf(m_player.getLife()), (float) (width*0.05), (float) (height*0.05), p);
             p.setColor(Color.WHITE);
         } else {
             p.setColor(Color.WHITE);
-            canvas.drawText("LIFE : " + String.valueOf(m_player.getLife()), 100, 100, p);
+            canvas.drawText("LIFE : " + String.valueOf(m_player.getLife()), (float) (width*0.05), (float) (height*0.05), p);
         }
+        p.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("KILL : " + String.valueOf(killcnt), (float) (width*0.7), (float) (height*0.1), p);
+        p.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("SCORE : " + String.valueOf(50 * killcnt),  (float) (width*0.7), (float) (height*0.05), p);
+        p.setTextSize((float) (width*0.05));
+        canvas.drawText("발사 속도 " + String.format("%.1f", nowMissileSpeed), (float) (width*0.05), (float) (height*0.95), p);
+        canvas.drawText("필살기 " + String.valueOf(specialSkill), (float) (width*0.75), (float) (height*0.95), p);
 
-        p.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("KILL : " + String.valueOf(killcnt), 600, 200, p);
-        p.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("SCORE : " + String.valueOf(50 * killcnt), 600, 100, p);
-        p.setTextSize(50);
-        canvas.drawText("발사 속도 " + String.format("%.1f", nowMissileSpeed), 100, 1700, p);
-        canvas.drawText("필살기 " + String.valueOf(specialSkill), 700, 1700, p);
+
         int cooldownTime = (int) ((System.currentTimeMillis() - Skilltime) / 1000);
-
         if (cooldownTime >= 5 && specialSkill > 0) {
-            canvas.drawText("준비완료!", 700, 1750, p);
+            canvas.drawText("준비완료!", (float) (width*0.75), (float) (height*0.999), p);
         } else {
             if (cooldownTime >= 5) cooldownTime = 5;
             p.setColor(Color.RED);
-            canvas.drawText("대기중 " + cooldownTime + "/5 s", 700, 1750, p);
+            canvas.drawText("대기중 " + cooldownTime + "/5 s", (float) (width*0.75), (float) (height*0.999), p);
         }
 
 
@@ -411,8 +429,8 @@ public class GameState implements IState {
     //모든적, 랜덤박스, 필살기1 제거
     public void allclear() {
         //필살기1 제거
-        for (int i = m_skilllist.size() - 1; i >= 0; i--) {
-            m_skilllist.remove(i);
+        for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
+            m_skill1_list.remove(i);
         }
         for (int i = m_pmslist.size() - 1; i >= 0; i--) {
             m_pmslist.remove(i);
@@ -443,20 +461,26 @@ public class GameState implements IState {
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-
+        System.out.println("터치좌표 x : ," + x +" y : " + y);
         int px = m_player.getX();
         int py = m_player.getY();
 
         //플레이어 터치 후 움직임
-        int difX = Math.abs(x - 90 - m_player.getX());
-        int difY = Math.abs(y - 90 - m_player.getY());
+        int difX = Math.abs(x - 90 - m_player.getX()); //비행기의 중점으로 비교하기 위해
+        int difY = Math.abs(y - 90 - m_player.getY()); //
 //        if (difX < 250 && difY < 250) m_player.setPosition(x - 90, y - 90); //터치
 
-        //버튼 범위설정
-        Rect r_left = new Rect(0, 1300, 100, 1400);
-        Rect r_right = new Rect(200, 1300, 300, 1400);
-        Rect r_down = new Rect(100, 1200, 200, 1300);
-        Rect r_up = new Rect(100, 1400, 200, 1500);
+        //버튼 범위설정(절대)
+//        Rect r_left = new Rect(0, 1300, 100, 1400);
+//        Rect r_right = new Rect(200, 1300, 300, 1400);
+//        Rect r_down = new Rect(100, 1200, 200, 1300);
+//        Rect r_up = new Rect(100, 1400, 200, 1500);
+        //버튼 범위설정(상대)
+        int top = (int) (height*0.7+100);
+        Rect r_left = new Rect(0, top, 100, top+100);
+        Rect r_right = new Rect(200, top, 300, top+100);
+        Rect r_down = new Rect(100, top-100, 200, top);
+        Rect r_up = new Rect(100, top+100, 200, top+200);
 
         //터치패드 구현
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -583,7 +607,7 @@ public class GameState implements IState {
         Skill1_SuperMissile skill = new Skill1_SuperMissile(0, 1800, 3000);// 미사일 위치,위치,속도
         SoundManager.getInstance().play(3);
         // 플레이어 미사일 list에 추가
-        m_skilllist.add(skill);
+        m_skill1_list.add(skill);
         SoundManager.getInstance().play(1);
     }
 
@@ -618,10 +642,10 @@ public class GameState implements IState {
 
         //필살기1 충돌
         if (playertype == 0) {
-            for (int i = m_skilllist.size() - 1; i >= 0; i--) {
+            for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
                 for (int j = m_enemlist.size() - 1; j >= 0; j--) {
-                    if (CollisionManager.CheckBoxToBox(m_skilllist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
-                        //m_skilllist.remove(i);
+                    if (CollisionManager.CheckBoxToBox(m_skill1_list.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
+                        //m_skill1_list.remove(i);
                         //이 부분이 폭발처리
                         m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(j).getX(), m_enemlist.get(j).getY()));
                         m_enemlist.remove(j);
@@ -635,10 +659,10 @@ public class GameState implements IState {
                 }
             }
             //스킬1 미사일처리
-            for (int i = m_skilllist.size() - 1; i >= 0; i--) {
+            for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
                 for (int j = m_enemmslist.size() - 1; j >= 0; j--) {
-                    if (CollisionManager.CheckBoxToBox(m_skilllist.get(i).m_BoundBox, m_enemmslist.get(j).m_BoundBox)) {
-                        //m_skilllist.remove(i);
+                    if (CollisionManager.CheckBoxToBox(m_skill1_list.get(i).m_BoundBox, m_enemmslist.get(j).m_BoundBox)) {
+                        //m_skill1_list.remove(i);
                         //이 부분이 폭발처리
                         m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemmslist.get(j).getX(), m_enemmslist.get(j).getY()));
                         m_enemmslist.remove(j);

@@ -51,11 +51,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 //        m_Image = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.background2));
 //        m_spr = new SpriteAnimation(BitmapFactory.decodeResource(getResources(), R.drawable.walk));//이미지 어디?
 //        m_spr.initSpriteData(180, 300, 5 ,4);
-
     }
 
     public void onDraw(Canvas canvas){
-
 //        Bitmap _scratch = BitmapFactory.decodeResource(getResources(),R.drawable.icon);
         canvas.drawColor(Color.BLACK);
 //        canvas.drawBitmap(_scratch, 10, 10, null);

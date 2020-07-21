@@ -317,7 +317,7 @@ public class GameState implements IState {
         } else {
             if (cooldownTime >= 5) cooldownTime = 5;
             p.setColor(Color.RED);
-            canvas.drawText("대기중 " + cooldownTime + "/5 s", (float) (width*0.75), (float) (height*0.999), p);
+            canvas.drawText("대기중" + cooldownTime + "/5 s", (float) (width*0.75), (float) (height*0.999), p);
         }
 
 

@@ -4,10 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.example.gameframework.AppManager;
 import com.example.gameframework.SpriteAnimation;
 
-public class RandomBox extends SpriteAnimation {
+import java.util.Random;
 
+public class RandomBox extends SpriteAnimation {
+    int width = AppManager.getInstance().getDeviceSize().x;
+    int height = AppManager.getInstance().getDeviceSize().y;
     public static final int STATE_NORMAL = 0;// 기본 상태
     public static final int STATE_OUT = 1;
     public int state = STATE_NORMAL;
@@ -25,12 +29,14 @@ public class RandomBox extends SpriteAnimation {
 
 
     void move(){
-        m_y += speed;
+        Random r = new Random();
+        m_y += r.nextInt(20)+1; //1~20
+//        m_y += speed;
     }
 
     public void Update()
     {
-        if(m_y>1800)
+        if(m_y>height)
             state=STATE_OUT;
     }
 

@@ -18,9 +18,9 @@ public class GraphicObject {
         canvas.drawBitmap(m_bitmap, m_x, m_y, null);
     }
 
-    public void setPosition(int x, int y){
-        m_x = x;
-        m_y = y;
+    public void setPosition(double x, double y){
+        m_x = (int) x;
+        m_y = (int) y;
     }
 
     public int getX(){

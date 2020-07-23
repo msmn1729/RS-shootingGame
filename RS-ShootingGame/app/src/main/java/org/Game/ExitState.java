@@ -69,7 +69,7 @@ public class ExitState implements IState {
         Intent intent = new Intent(mcontext, InsertView.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mcontext.startActivity(intent);
-        SoundManager.getInstance().play(4);
+       // SoundManager.getInstance().play(4);
         return true;
     }
 }

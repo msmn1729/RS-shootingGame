@@ -34,7 +34,7 @@ public class SoundManager {
             m_SoundPool = new SoundPool.Builder().build();
         }
         else
-            m_SoundPool = new SoundPool(9, AudioManager.STREAM_MUSIC, 0);
+            m_SoundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
 
         m_SoundPoolMap = new HashMap();
         m_AudioManager = (AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);

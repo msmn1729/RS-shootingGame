@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 import com.example.gameframework.GraphicObject;
+import com.example.gameframework.SpriteAnimation;
 
 public class Missile extends GraphicObject {
     public static final int STATE_NORMAL = 0;

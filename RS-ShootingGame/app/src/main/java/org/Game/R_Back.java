@@ -14,6 +14,9 @@ public class R_Back extends GraphicObject {
     }
 
     public void Draw(Canvas canvas){
-        canvas.drawBitmap(m_bitmap, 140, 1550, null);
+        int width = AppManager.getInstance().getDeviceSize().x;
+        int height = AppManager.getInstance().getDeviceSize().y;
+        canvas.drawBitmap(m_bitmap, (int)(width*0.13), (int)(height*0.89), null);
+        //canvas.drawBitmap(m_bitmap, 140, 1550, null);
     }
 }

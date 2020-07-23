@@ -12,8 +12,11 @@ public class Missile_Enemy extends Missile {
 
     public void Update(){
         m_y+=20;
-        if(m_y > 1800)state = STATE_OUT;
 
-        m_BoundBox.set(m_x, m_y, m_x + 143, m_y + 143);
+        int height = AppManager.getInstance().getDeviceSize().y;
+        if(m_y > height) state = STATE_OUT;
+
+        m_BoundBox.set(m_x, m_y, m_x + this.m_bitmap.getWidth(),
+                m_y + this.m_bitmap.getHeight());
     }
 }

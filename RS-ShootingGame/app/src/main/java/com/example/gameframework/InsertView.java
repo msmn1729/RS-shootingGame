@@ -48,8 +48,10 @@ public class InsertView extends AppCompatActivity {
         btn_record = findViewById(R.id.btn_record);
         btn_record.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
+                setContentView(new GameView(mcontext,2));
                 playerID = et_playerID.getText().toString();
-                System.out.println("이름 : " + playerID);
+                //System.out.println("이름 : " + playerID);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date time = new Date();
 
@@ -88,7 +90,7 @@ public class InsertView extends AppCompatActivity {
                 RankRequest rankRequest = new RankRequest(playerID, plainName,
                         p_score + "", recordDate,
                         responseListener);
-                RequestQueue queue = Volley.newRequestQueue(InsertView.this); //실제 서버에 저장하는 부분(게임뷰 실행과 동시에하면 저장은 되지만 게임뷰는 실행안됨)
+                RequestQueue queue = Volley.newRequestQueue(InsertView.this); //실제 서버에 저장하는 부분
                 queue.add(rankRequest);
                 return;
             }

@@ -22,15 +22,18 @@ import com.example.gameframework.SoundManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import static com.example.gameframework.MainActivity.mcontext;
 
 public class RankState implements IState {
+    int width = AppManager.getInstance().getDeviceSize().x;
+    int height = AppManager.getInstance().getDeviceSize().y;
     private R_BackGround r_background;
     private R_Main r_main;
     private R_Next r_next;
     private R_Back r_back;
-    public static int realflag=1;
-    int count=0;
+    public static int realflag = 1;
+    int count = 0;
     String[] p_ID = new String[1000];
     String[] p_AirplaneType = new String[1000];
     String[] p_Score = new String[1000];
@@ -42,7 +45,8 @@ public class RankState implements IState {
     }
 
     private static RankState rank = new RankState();
-    public static RankState getInstance(int flag){
+
+    public static RankState getInstance(int flag) {
         realflag = flag;
         return rank;
     }
@@ -51,71 +55,78 @@ public class RankState implements IState {
     public void Init() {
         jsonParse();
         r_background = new R_BackGround(0);
-        r_main= new R_Main();
-        r_next= new R_Next();
-        r_back= new R_Back();
+        r_main = new R_Main();
+        r_next = new R_Next();
+        r_back = new R_Back();
     }
+
     @Override
     public void Render(Canvas canvas) {
 
         //canvas.drawColor(Color.BLACK);
         r_background.Draw(canvas);
         r_main.Draw(canvas);
-        if(realflag==1) {
+        if (realflag == 1) {
             r_next.Draw(canvas);
-        }else if(realflag==2) {
+        } else if (realflag == 2) {
             r_back.Draw(canvas);
         }
         Paint p = new Paint();
         Paint p2 = new Paint();
         Paint p3 = new Paint();
-        p.setTextSize(40);
-        p2.setTextSize(45);
-        p3.setTextSize(80);
+//        p.setTextSize(40);
+//        p2.setTextSize(45);
+//        p3.setTextSize(80);
+        p.setTextSize((float) (width * 0.038));
+        p2.setTextSize((float) (width * 0.043));
+        p3.setTextSize((float) (width * 0.076));
         p.setColor(Color.WHITE);
         p2.setColor(Color.YELLOW);
         p3.setColor(Color.RED);
         //"playerID""playerAirplaneType""playerScore""recordDate"
-        int y =30;
-        canvas.drawText("! SHOW ME THE RANK !", 150, 100, p3);
+        int y = 30;
+        canvas.drawText("! SHOW ME THE RANK !", (float) (width*0.11),
+                (float) (height*0.057), p3);
 
         //count = 20; //숫자 크면 화면 넘어감(스크롤 기능 추가예정)
-        canvas.drawText("NAME",105, 220, p2);
-        canvas.drawText("TYPE", 360, 220, p2);
-        canvas.drawText("SCORE", 520, 220, p2);
-        canvas.drawText("DATE", 680, 220, p2);
-        if(realflag==1) {
-            for (int i = 0; i < count; i++) {
-                canvas.drawText(String.valueOf(i + 1), 10, 270 + y, p2);
-                canvas.drawText(String.valueOf(p_ID[i]), 105, 270 + y, p);
-                canvas.drawText(String.valueOf(p_AirplaneType[i]), 360, 270 + y, p);
-                canvas.drawText(String.valueOf(p_Score[i]), 520, 270 + y, p);
-                canvas.drawText(String.valueOf(p_recordDate[i]), 680, 270 + y, p);
-                y += 70;
-                if (i >= 17) {
+        canvas.drawText("NAME", (float) (width*0.1), (float) (height*0.1257), p2);
+        canvas.drawText("TYPE", (float) (width*0.34), (float) (height*0.1257), p2);
+        canvas.drawText("SCORE", (float) (width*0.495), (float) (height*0.1257), p2);
+        canvas.drawText("DATE", (float) (width*0.647), (float) (height*0.1257), p2);
+        int i = 0;
+        if (realflag == 1) {
+
+            for (i = 0; i < count; i++) {
+                canvas.drawText(String.valueOf(i + 1), (float) (width*0.0095), (float) (height*0.1542 + y), p2);
+                canvas.drawText(String.valueOf(p_ID[i]), (float) (width*0.1), (float) (height*0.1542 + y), p);
+                canvas.drawText(String.valueOf(p_AirplaneType[i]), (float) (width*0.34), (float) (height*0.1542 + y), p);
+                canvas.drawText(String.valueOf(p_Score[i]), (float) (width*0.495), (float) (height*0.1542 + y), p);
+                canvas.drawText(String.valueOf(p_recordDate[i]), (float) (width*0.647), (float) (height*0.1542 + y), p);
+                y += height*0.0365;
+                if (i >= 19) {
                     break;
                 }
             }
-        }else if(realflag==2){
-            for(int i=18;i<count;i++)
-            {
-                canvas.drawText(String.valueOf(i+1), 10, 270+y, p2);
-                canvas.drawText(String.valueOf(p_ID[i]), 105, 270+y, p);
-                canvas.drawText(String.valueOf(p_AirplaneType[i]), 360, 270+y, p);
-                canvas.drawText(String.valueOf(p_Score[i]), 520, 270+y, p);
-                canvas.drawText(String.valueOf(p_recordDate[i]), 680, 270+y, p);
-                y+=70;
-                if(i>=35){
+        } else if (realflag == 2) {
+            for (i = 20; i < count; i++) {
+                canvas.drawText(String.valueOf(i + 1), (float) (width*0.0095), (float) (height*0.1542 + y), p2);
+                canvas.drawText(String.valueOf(p_ID[i]), (float) (width*0.1), (float) (height*0.1542 + y), p);
+                canvas.drawText(String.valueOf(p_AirplaneType[i]), (float) (width*0.34), (float) (height*0.1542 + y), p);
+                canvas.drawText(String.valueOf(p_Score[i]), (float) (width*0.495), (float) (height*0.1542 + y), p);
+                canvas.drawText(String.valueOf(p_recordDate[i]), (float) (width*0.647), (float) (height*0.1542 + y), p);
+                y += height*0.0365;
+                if (i >= 39) {
                     break;
                 }
             }
         }
 
     }
-    public void jsonParse(){
+
+    public void jsonParse() {
         mQueue = Volley.newRequestQueue(mcontext);
 
-        String url ="https://whdgurtpqmssju.cafe24.com/post/ShootingRank.php";
+        String url = "https://whdgurtpqmssju.cafe24.com/post/ShootingRank.php";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
@@ -124,7 +135,7 @@ public class RankState implements IState {
                         try {
                             //"playerID""playerAirplaneType""playerScore""recordDate"
                             JSONArray jsonArray = response.getJSONArray("response");
-                            String playerID,playerAirplaneType,playerScore,recordDate;
+                            String playerID, playerAirplaneType, playerScore, recordDate;
                             for (int i = 0; i < jsonArray.length(); i++) { //수정
                                 JSONObject ranking = jsonArray.getJSONObject(i);
 
@@ -133,12 +144,12 @@ public class RankState implements IState {
                                 playerScore = ranking.getString("playerScore");
                                 recordDate = ranking.getString("recordDate");
 
-                                p_ID[i]=playerID;
-                                p_AirplaneType[i]=playerAirplaneType;
-                                p_Score[i]=playerScore;
-                                p_recordDate[i]=recordDate;
+                                p_ID[i] = playerID;
+                                p_AirplaneType[i] = playerAirplaneType;
+                                p_Score[i] = playerScore;
+                                p_recordDate[i] = recordDate;
                                 count++;
-                                if(playerScore == null){
+                                if (playerScore == null) {
                                     break;
                                 }
                                 //  Log.d(TAG, "onResponse: 성공, rank 결과 : \n" + rank);
@@ -170,7 +181,6 @@ public class RankState implements IState {
     }
 
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -180,37 +190,40 @@ public class RankState implements IState {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int _x, _y;
-        _x = (int) event.getX( );
-        _y = (int) event.getY( );
-        Rect rt = new Rect( );
-        Rect rt2 = new Rect( );
+        _x = (int) event.getX();
+        _y = (int) event.getY();
+        Rect rt = new Rect();
+        Rect rt2 = new Rect();
         int scoredata = count;
+
         //가로 300 세로 100
-        rt2.set (140, 1550,470, 1650);
-        if(realflag==1) {
-            if (rt2.contains(_x, _y)&&event.getAction() == MotionEvent.ACTION_DOWN&&scoredata>20) {
-                SoundManager.getInstance().play(4);
+        rt2.set((int) (width * 0.13), (int) (height * 0.89),
+                (int) (width * 0.13) + r_main.m_bitmap.getWidth(), (int) (height * 0.89) + r_main.m_bitmap.getHeight());
+        if (realflag == 1) {
+            if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN && scoredata > 20) {
+                //SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState
                         (RankState.getInstance(2));
-                count=0;
-            }else if(rt2.contains(_x, _y)&&event.getAction() == MotionEvent.ACTION_DOWN&&scoredata<=20){
-                SoundManager.getInstance().play(4);
-                Toast myToast = Toast.makeText(mcontext,"순위가 총"+String.valueOf(scoredata)+"까지만 존재합니다.", Toast.LENGTH_SHORT);
-                myToast.show();
+                count = 0;
+            } else if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN && scoredata <= 20) {
+                //SoundManager.getInstance().play(4);
+//                Toast myToast = Toast.makeText(mcontext, "순위가 총" + String.valueOf(scoredata) + "까지만 존재합니다.", Toast.LENGTH_SHORT);
+//                myToast.show();
             }
-        }else if(realflag==2) {
-            if (rt2.contains(_x, _y)&&event.getAction() == MotionEvent.ACTION_DOWN) {
-                SoundManager.getInstance().play(4);
+        } else if (realflag == 2) {
+            if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN) {
+                //SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState
                         (RankState.getInstance(1));
-                count=0;
+                count = 0;
             }
         }
-        rt.set (535, 1550,865, 1650);
+        rt.set((int) (width * 0.51), (int) (height * 0.89),
+                (int) (width * 0.51) + r_main.m_bitmap.getWidth(), (int) (height * 0.89) + r_main.m_bitmap.getHeight());
         if (rt.contains(_x, _y)) {
-            SoundManager.getInstance().play(4);
-            AppManager.getInstance( ).getGameView( ).changeGameState
-                    ( new ReadyState());
+            //SoundManager.getInstance().play(4);
+            AppManager.getInstance().getGameView().changeGameState
+                    (new ReadyState());
         }
 
         return true;

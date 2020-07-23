@@ -100,22 +100,22 @@ public class ReadyState implements IState {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             if(r_start.contains(x,y)){
-                SoundManager.getInstance().play(4);
+                //SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState(SelectState.getInstance());
             }
             else if(r_rank.contains(x,y)) {
-                SoundManager.getInstance().play(4);
+                //SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState(new RankState());
             }
 
             else if(r_set.contains(x,y))
             {
-                SoundManager.getInstance().play(4);
+                //SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState(SettingState.getInstance());
             }
             else if (r_exit.contains(x, y))
             {
-                SoundManager.getInstance().play(4);
+                //SoundManager.getInstance().play(4);
                 System.exit(0);
             }
         }

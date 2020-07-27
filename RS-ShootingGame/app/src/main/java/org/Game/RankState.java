@@ -201,18 +201,18 @@ public class RankState implements IState {
                 (int) (width * 0.13) + r_main.m_bitmap.getWidth(), (int) (height * 0.89) + r_main.m_bitmap.getHeight());
         if (realflag == 1) {
             if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN && scoredata > 20) {
-                //SoundManager.getInstance().play(4);
+                SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState
                         (RankState.getInstance(2));
                 count = 0;
             } else if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN && scoredata <= 20) {
-                //SoundManager.getInstance().play(4);
+                SoundManager.getInstance().play(4);
 //                Toast myToast = Toast.makeText(mcontext, "순위가 총" + String.valueOf(scoredata) + "까지만 존재합니다.", Toast.LENGTH_SHORT);
 //                myToast.show();
             }
         } else if (realflag == 2) {
             if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN) {
-                //SoundManager.getInstance().play(4);
+                SoundManager.getInstance().play(4);
                 AppManager.getInstance().getGameView().changeGameState
                         (RankState.getInstance(1));
                 count = 0;
@@ -221,7 +221,7 @@ public class RankState implements IState {
         rt.set((int) (width * 0.51), (int) (height * 0.89),
                 (int) (width * 0.51) + r_main.m_bitmap.getWidth(), (int) (height * 0.89) + r_main.m_bitmap.getHeight());
         if (rt.contains(_x, _y)) {
-            //SoundManager.getInstance().play(4);
+            SoundManager.getInstance().play(4);
             AppManager.getInstance().getGameView().changeGameState
                     (new ReadyState());
         }

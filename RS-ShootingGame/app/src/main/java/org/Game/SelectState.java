@@ -13,7 +13,8 @@ import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
 public class SelectState implements IState {
-
+    int width = AppManager.getInstance().getDeviceSize().x;
+    int height = AppManager.getInstance().getDeviceSize().y;
     private Bitmap player1, player2, player3, gamestart;
     private BackGround back;
     int flag;//비행기 선택 변수
@@ -40,6 +41,14 @@ public class SelectState implements IState {
         player3 = AppManager.getInstance().getBitmap(R.drawable.air3);
         player3 = Bitmap.createScaledBitmap(player3,300, 300, true);
         gamestart = AppManager.getInstance().getBitmap(R.drawable.gamestart);
+//        back = new BackGround(1);
+//        player1 = AppManager.getInstance().getBitmap(R.drawable.air1);
+//        player1 = Bitmap.createScaledBitmap(player1, (int) (width*0.286), (int) (height*0.17), true);//비행기 1의 비트맵을 받아와 사이즈까지 조절 함
+//        player2 = AppManager.getInstance().getBitmap(R.drawable.air2);
+//        player2 = Bitmap.createScaledBitmap(player2,(int) (width*0.286), (int) (height*0.17), true);
+//        player3 = AppManager.getInstance().getBitmap(R.drawable.air3);
+//        player3 = Bitmap.createScaledBitmap(player3,(int) (width*0.286), (int) (height*0.17), true);
+//        gamestart = AppManager.getInstance().getBitmap(R.drawable.gamestart);
     }
 
     @Override
@@ -58,14 +67,14 @@ public class SelectState implements IState {
         back.Draw(canvas);
 
         Paint p=new Paint();//화면 상단에 캐릭터 선택하라는 문구를 띄움
-        p.setTextSize(80);
+        p.setTextSize((float) (width*0.0762));
         p.setColor(Color.GREEN);
-        canvas.drawText("비행기를 선택하세요!",200,200, p);
+        canvas.drawText("비행기를 선택하세요!", (float) (width*0.19), (float) (height*0.11), p);
 
-        canvas.drawBitmap(player1, 130, 500, null);
-        canvas.drawBitmap(player2, 630, 500, null);
-        canvas.drawBitmap(player3, 370, 900, null);
-        canvas.drawBitmap(gamestart, 300, 1300, null);
+        canvas.drawBitmap(player1, (float) (width*0.124), (float) (height*0.286), null);
+        canvas.drawBitmap(player2, (float) (width*0.6), (float) (height*0.286), null);
+        canvas.drawBitmap(player3, (float) (width*0.35), (float) (height*0.514), null);
+        canvas.drawBitmap(gamestart, (float) (width*0.286), (float) (height*0.743), null);
 
     }
 
@@ -79,7 +88,8 @@ public class SelectState implements IState {
         int x = (int)event.getX(0);
         int y = (int)event.getY(0);
 //        Log.d("", "" + x +"," + y);
-        if (x > 160 && x < 460 && y > 500 && y < 800)//비행기 1의 좌표를 선택했을 시 선택 이미지를 불러옴
+        if (x > width*0.15 && x < width*0.44
+                && y > height*0.27 && y < height*0.46)//비행기 1의 좌표를 선택했을 시 선택 이미지를 불러옴
         {//비행기 1 선택 시
             SoundManager.getInstance().play(4);
             player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air1s),300, player1.getHeight(), true);
@@ -89,7 +99,8 @@ public class SelectState implements IState {
             player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3),300, player3.getHeight(), true);
         }
 
-        else if (x > 630 && x < 930 && y > 500 && y < 800)//비행기 2 선택 시 위의 if문과 처리는 같음
+        else if (x > width*0.6 && x < width*0.89
+                && y > height*0.29 && y < height*0.46)//비행기 2 선택 시 위의 if문과 처리는 같음
         {//비행기 2 선택 시
             SoundManager.getInstance().play(4);
             player2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air2s),300, player2.getHeight(), true);
@@ -98,7 +109,8 @@ public class SelectState implements IState {
             player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air1),300, player1.getHeight(), true);
             player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3),300, player3.getHeight(), true);
         }
-        else if(x > 370 && x < 670 && y > 900 && y < 1200){
+        else if(x > width*0.35 && x < width*0.64
+                && y > height*0.51 && y < height*0.69){
             SoundManager.getInstance().play(4);
             player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3s),300, player3.getHeight(), true);
             flag = 2;
@@ -108,7 +120,8 @@ public class SelectState implements IState {
         }
 
         //게임시작을 눌렀을 경우
-        if(flag != 3 && x > 300 && x < 750 && y > 1300 && y < 1452){
+        if(flag != 3 && x > width*0.29 && x < width*0.71
+                && y > height*0.74 && y < height*0.83){
             SoundManager.getInstance().play(4);
             GameState.getInstance().playertype = flag;
             AppManager.getInstance().getGameView().changeGameState(GameState.getInstance());

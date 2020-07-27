@@ -23,21 +23,23 @@ public class RandomBox extends SpriteAnimation {
 
     int speed;
 
-    public RandomBox(Bitmap bitmap){
+    public RandomBox(Bitmap bitmap) {
         super(bitmap);
     }
 
+    int r = new Random().nextInt(10) + 5;
 
-    void move(){
-        Random r = new Random();
-        m_y += r.nextInt(20)+1; //1~20
+    void move() {
+        m_y += r;
 //        m_y += speed;
+        if (m_y > height * 1.03)
+            state = STATE_OUT;
     }
 
-    public void Update()
-    {
-        if(m_y>height)
-            state=STATE_OUT;
+
+    public void Update() {
+//        if (m_y > height * 0.5)
+//            state = STATE_OUT;
     }
 
     @Override

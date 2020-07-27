@@ -41,6 +41,7 @@ public class InsertView extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.insertview);
         SoundManager.getInstance().play(2);
+        //SoundManager.getInstance().play(2);
         //아이디 값
         et_playerID = findViewById(R.id.et_playerID);
 
@@ -49,7 +50,7 @@ public class InsertView extends AppCompatActivity {
         btn_record.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
-                setContentView(new GameView(mcontext,2));
+//                setContentView(new GameView(mcontext,2));
                 playerID = et_playerID.getText().toString();
                 //System.out.println("이름 : " + playerID);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

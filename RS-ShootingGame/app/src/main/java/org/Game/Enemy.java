@@ -3,9 +3,11 @@ package org.Game;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
+import com.example.gameframework.AppManager;
 import com.example.gameframework.SpriteAnimation;
 
 public class Enemy extends SpriteAnimation {
+    int height = AppManager.getInstance().getDeviceSize().y;
     protected int hp;
     protected float speed;
 
@@ -29,14 +31,14 @@ public class Enemy extends SpriteAnimation {
 
     void move(){
         if(movetype == MOVE_PATTERN_1){
-            if(m_y <= 500){
+            if(m_y <= height*0.29){
                 m_y += speed;
             }
             else
                 m_y += speed * 2;
         }
         else if(movetype == MOVE_PATTERN_2){
-            if(m_y <= 500)
+            if(m_y <= height*0.29)
                 m_y += speed;
             else{
                 m_x += speed;
@@ -44,14 +46,14 @@ public class Enemy extends SpriteAnimation {
             }
         }
         else if(movetype == MOVE_PATTERN_3){
-            if(m_y <= 500)
+            if(m_y <= height*0.29)
                 m_y += speed;
             else{
                 m_x -= speed;
                 m_y += speed;
             }
         }
-        if(m_y > 1800) state = STATE_OUT;
+        if(m_y > height*1.03) state = STATE_OUT;
     }
 
     void attack(){

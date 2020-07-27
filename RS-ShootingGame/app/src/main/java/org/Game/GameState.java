@@ -149,7 +149,7 @@ public class GameState implements IState {
         //m_keypad.setPosition(0, (int) (height * 0.7));
 
         //스킬버튼 상대좌표
-        m_skill_btn_icon.setPosition(0, height-m_skill_btn_icon.m_bitmap.getHeight());
+        m_skill_btn_icon.setPosition(0, height - m_skill_btn_icon.m_bitmap.getHeight());
     }
 
     @Override
@@ -159,108 +159,115 @@ public class GameState implements IState {
 
     @Override
     public void Update() {
-        GameTime = System.currentTimeMillis();
-        m_player.Update(GameTime);
-        m_background.Update(GameTime);
-        m_circle.Update(GameTime);
 
-        //필살기 최대, 최소 조절
-        if (skill_cnt < 0) {
-            skill_cnt = 0;
-        }
+        try {
+            GameTime = System.currentTimeMillis();
+            m_player.Update(GameTime);
+            m_background.Update(GameTime);
+            m_circle.Update(GameTime);
 
-        if (skill_cnt > 3)
-            skill_cnt = 3; //필살기 최대 3개 소유가능
-
-        //미사일 발사 속도 조절
-        if (missileSpeed <= 0) {
-            missileSpeed = 100;
-            nowMissileSpeed = 0.1f;
-        } else if (missileSpeed > 1500) {
-            missileSpeed = 1500;
-            nowMissileSpeed = 1.5f;
-        }
-
-        //미사일 상태 조절
-        if (missileState >= 3)
-            missileState = 3;
-
-        if (missileState <= 1)
-            missileState = 1;
-
-        //플레이어 생명 최대 조절
-        if (m_player.getLife() > 5)
-            m_player.m_Life = 5;
-
-        //2단계일때
-        if (missileState >= 2) {
-            for (int i = m_lpmslist.size() - 1; i >= 0; i--) {
-                Missile_Player lpms = m_lpmslist.get(i);
-                lpms.Update();
-                if (lpms.state == Missile.STATE_OUT) m_lpmslist.remove(i);
+            //필살기 최대, 최소 조절
+            if (skill_cnt < 0) {
+                skill_cnt = 0;
             }
-        }
 
-        //3단계일떄
-        if (missileState == 3) {
-            for (int i = m_rpmslist.size() - 1; i >= 0; i--) {
-                Missile_Player rpms = m_rpmslist.get(i);
-                rpms.Update();
-                if (rpms.state == Missile.STATE_OUT) m_rpmslist.remove(i);
+            if (skill_cnt > 3)
+                skill_cnt = 3; //필살기 최대 3개 소유가능
+
+            //미사일 발사 속도 조절
+            if (missileSpeed <= 0) {
+                missileSpeed = 100;
+                nowMissileSpeed = 0.1f;
+            } else if (missileSpeed > 1500) {
+                missileSpeed = 1500;
+                nowMissileSpeed = 1.5f;
             }
-        }
 
-        //라이프가 0이될때 죽어야하므로 주기적인 체크
-        if (m_player.getLife() <= 0)
-            AppManager.getInstance().getGameView().changeGameState(ExitState.getInstance());
+            //미사일 상태 조절
+            if (missileState >= 3)
+                missileState = 3;
 
-        //필살기1 포문 한 번만 진행
-        for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
-            Skill1_SuperMissile skill1 = m_skill1_list.get(i);
-            skill1.Update();
-            if (skill1.state == Missile.STATE_OUT) m_skill1_list.remove(i);
-        }
-        //필살기2
-        for (int i = m_skill2_list.size() - 1; i >= 0; i--) {
-            Skill2_Enemy_Explosion skill2 = m_skill2_list.get(i);
-            skill2.Update(GameTime); //시간
-            if (skill2.getAnimationEnd()) m_skill2_list.remove(i); //폭발애니메이션 끝나면 리스트삭제
-        }
-        //파란 폭발
-        for (int i = m_explosion_blue.size() - 1; i >= 0; i--) {
-            Explosion_Blue explosion_blue = m_explosion_blue.get(i);
-            explosion_blue.Update(GameTime); //시간
-            if (explosion_blue.getAnimationEnd()) m_explosion_blue.remove(i); //폭발애니메이션 끝나면 리스트삭제
-        }
+            if (missileState <= 1)
+                missileState = 1;
 
-        for (int i = m_pmslist.size() - 1; i >= 0; i--) {
-            Missile_Player pms = m_pmslist.get(i);
-            pms.Update();
-            if (pms.state == Missile.STATE_OUT) m_pmslist.remove(i);
-        }
-        for (int i = m_enemlist.size() - 1; i >= 0; i--) {
-            Enemy enem = m_enemlist.get(i);
-            enem.Update(GameTime);
-            if (enem.state == Missile.STATE_OUT) m_enemlist.remove(i);
-        }
-        for (int i = m_enemmslist.size() - 1; i >= 0; i--) {
-            Missile enemms = m_enemmslist.get(i);
-            enemms.Update();
-            if (enemms.state == Missile.STATE_OUT)
-                m_enemmslist.remove(i);
-        }
-        //랜덤 박스 업데이트 및 상태 확인
-        for (int i = m_randomboxList.size() - 1; i >= 0; i--) {
-            m_randomboxList.get(i).Update(GameTime);
-            if (m_randomboxList.get(i).state == RandomBox.STATE_OUT)
-                m_randomboxList.remove(i);
-        }
+            //플레이어 생명 최대 조절
+            if (m_player.getLife() > 5)
+                m_player.m_Life = 5;
 
-        MakeRandomBox();
-        makeEnemy();
-        MakePlayerMissile();
-        CheckCollision();
-        Skill3();
+            //2단계일때
+            if (missileState >= 2) {
+                for (int i = m_lpmslist.size() - 1; i >= 0; i--) {
+                    Missile_Player lpms = m_lpmslist.get(i);
+                    lpms.Update();
+                    if (lpms.state == Missile.STATE_OUT) m_lpmslist.remove(i);
+                }
+            }
+
+            //3단계일떄
+            if (missileState == 3) {
+                for (int i = m_rpmslist.size() - 1; i >= 0; i--) {
+                    Missile_Player rpms = m_rpmslist.get(i);
+                    rpms.Update();
+                    if (rpms.state == Missile.STATE_OUT) m_rpmslist.remove(i);
+                }
+            }
+
+            //라이프가 0이될때 죽어야하므로 주기적인 체크
+            if (m_player.getLife() <= 0)
+                AppManager.getInstance().getGameView().changeGameState(ExitState.getInstance());
+
+            //필살기1 포문 한 번만 진행
+            for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
+                Skill1_SuperMissile skill1 = m_skill1_list.get(i);
+                skill1.Update();
+                if (skill1.state == Missile.STATE_OUT) m_skill1_list.remove(i);
+            }
+            //필살기2
+            for (int i = m_skill2_list.size() - 1; i >= 0; i--) {
+                Skill2_Enemy_Explosion skill2 = m_skill2_list.get(i);
+                skill2.Update(GameTime); //시간
+                if (skill2.getAnimationEnd()) m_skill2_list.remove(i); //폭발애니메이션 끝나면 리스트삭제
+            }
+            //파란 폭발
+            for (int i = m_explosion_blue.size() - 1; i >= 0; i--) {
+                Explosion_Blue explosion_blue = m_explosion_blue.get(i);
+                explosion_blue.Update(GameTime); //시간
+                if (explosion_blue.getAnimationEnd())
+                    m_explosion_blue.remove(i); //폭발애니메이션 끝나면 리스트삭제
+            }
+
+            for (int i = m_pmslist.size() - 1; i >= 0; i--) {
+                Missile_Player pms = m_pmslist.get(i);
+                pms.Update();
+                if (pms.state == Missile.STATE_OUT) m_pmslist.remove(i);
+            }
+            for (int i = m_enemlist.size() - 1; i >= 0; i--) {
+                Enemy enem = m_enemlist.get(i);
+                enem.Update(GameTime);
+                if (enem.state == Missile.STATE_OUT) m_enemlist.remove(i);
+            }
+            for (int i = m_enemmslist.size() - 1; i >= 0; i--) {
+                Missile enemms = m_enemmslist.get(i);
+                enemms.Update();
+                if (enemms.state == Missile.STATE_OUT)
+                    m_enemmslist.remove(i);
+            }
+            //랜덤 박스 업데이트 및 상태 확인
+            for (int i = m_randomboxList.size() - 1; i >= 0; i--) {
+                m_randomboxList.get(i).Update(GameTime);
+                if (m_randomboxList.get(i).state == RandomBox.STATE_OUT)
+                    m_randomboxList.remove(i);
+            }
+
+            MakeRandomBox();
+            makeEnemy();
+            MakePlayerMissile();
+            CheckCollision();
+            Skill3();
+        } catch (Exception e) {
+            System.out.println("오류");
+            e.printStackTrace();
+        }
     }
 
     //캔버스에 그려주는 메소드
@@ -289,7 +296,7 @@ public class GameState implements IState {
                 skill1.Draw(canvas);
             for (Skill2_Enemy_Explosion skill2 : m_skill2_list)
                 skill2.Draw(canvas);
-            for(Explosion_Blue explosion_blue : m_explosion_blue)
+            for (Explosion_Blue explosion_blue : m_explosion_blue)
                 explosion_blue.Draw(canvas);
         } catch (Exception e) {
             System.out.println("오류");
@@ -313,17 +320,15 @@ public class GameState implements IState {
         }
 
         //필살기아이콘
-        if(playertype == 0) {
-            m_skill_icon.setPosition(m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth()*0.23,
-                    m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight()*0.1);
-        }
-        else if(playertype == 1) {
-            m_skill_icon.setPosition(m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth()*0.14,
-                    m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight()*0.22);
-        }
-        else if(playertype == 2) {
-            m_skill_icon.setPosition(m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth()*0.1,
-                    m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight()*0.12);
+        if (playertype == 0) {
+            m_skill_icon.setPosition(m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth() * 0.23,
+                    m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight() * 0.1);
+        } else if (playertype == 1) {
+            m_skill_icon.setPosition(m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth() * 0.14,
+                    m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight() * 0.22);
+        } else if (playertype == 2) {
+            m_skill_icon.setPosition(m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth() * 0.1,
+                    m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight() * 0.12);
         }
         m_skill_icon.Draw(canvas);
 
@@ -509,110 +514,44 @@ public class GameState implements IState {
         int py = m_player.getY();
 
         //플레이어 터치 후 움직임
-        int difX = (int) Math.abs(x - width*0.1 - m_player.getX()); //비행기의 중점으로 비교하기 위해
-        int difY = (int) Math.abs(y - width*0.1 - m_player.getY()); //0.0857
-        if (difX < width*0.3 && difY < width*0.3)
-            m_player.setPosition(x - width*0.15,
-                    y - width*0.2 ); //터치
+        int difX = (int) Math.abs(x - width * 0.1 - m_player.getX()); //비행기의 중점으로 비교하기 위해
+        int difY = (int) Math.abs(y - width * 0.1 - m_player.getY()); //0.0857
+        if (difX < width * 0.3 && difY < width * 0.3)
+            m_player.setPosition(x - width * 0.15,
+                    y - width * 0.2); //터치
 
         Rect r_skill_btn = new Rect(m_skill_btn_icon.getX(), m_skill_btn_icon.getY(),
-                m_skill_btn_icon.getX()+m_skill_btn_icon.m_bitmap.getWidth(),
-                m_skill_btn_icon.getY()+m_skill_btn_icon.m_bitmap.getHeight());
+                m_skill_btn_icon.getX() + m_skill_btn_icon.m_bitmap.getWidth(),
+                m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getHeight());
 
-        {
-            if (r_skill_btn.contains(x, y)) {
-                if (System.currentTimeMillis() - Skilltime < 5000) //딜레이 5초
-                {
-                    return false;
-                }
 
-                if (skill_cnt > 0) {
-                    Skilltime = System.currentTimeMillis(); //딜레이 측정하기 위해 이전값 기억
-                    skill_cnt--;
-                    if (playertype == 0) {
-                        MakeSkill1_SuperMissile();
-                    } else if (playertype == 1) {
-                        MakeSkill2_Explosion();
-                    } else if (playertype == 2) {
-                        startskill3 = 3;
-                        fflag = 1;
-                        if (startflag == 1) {
-                            m_circle.setPosition(m_player.getX(), m_player.getY());
-                            startflag = 0;
-                        }
+        if (r_skill_btn.contains(x, y) && event.getPointerCount() > 0) {
+            if (System.currentTimeMillis() - Skilltime < 5000) //딜레이 5초
+            {
+                return false;
+            }
+
+            if (skill_cnt > 0) {
+                Skilltime = System.currentTimeMillis(); //딜레이 측정하기 위해 이전값 기억
+                skill_cnt--;
+                if (playertype == 0) {
+                    MakeSkill1_SuperMissile();
+                } else if (playertype == 1) {
+                    MakeSkill2_Explosion();
+                } else if (playertype == 2) {
+                    startskill3 = 3;
+                    fflag = 1;
+                    if (startflag == 1) {
+                        m_circle.setPosition(m_player.getX(), m_player.getY());
+                        startflag = 0;
                     }
                 }
             }
         }
 
-
-        //버튼 범위설정(상대)
-//        int top = (int) (height * 0.7 + 100);
-//        Rect r_left = new Rect(0, top, 100, top + 100);
-//        Rect r_right = new Rect(200, top, 300, top + 100);
-//        Rect r_down = new Rect(100, top - 100, 200, top);
-//        Rect r_up = new Rect(100, top + 100, 200, top + 200);
-//
-//        //터치패드 구현
-//        if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-//            if (r_left.contains(x, y)) {
-//                SoundManager.getInstance().play(4);
-//                m_player.setPosition(px - 20, py);
-//                ax = px - 20;
-//                ay = py;
-//                if (startskill3 == 3) {
-//                    m_circle.setPosition(px - 20 - cir, py - cir);
-//                }
-//            } else if (r_right.contains(x, y)) {
-//                SoundManager.getInstance().play(4);
-//                m_player.setPosition(px + 20, py);
-//                ax = px + 20;
-//                ay = py;
-//                if (startskill3 == 3) {
-//                    m_circle.setPosition(px + 20 - cir, py - cir);
-//                }
-//            } else if (r_up.contains(x, y)) {
-//                SoundManager.getInstance().play(4);
-//                m_player.setPosition(px, py + 20);
-//                ax = px;
-//                ay = py + 20;
-//                if (startskill3 == 3) {
-//                    m_circle.setPosition(px - cir, py + 20 - cir);
-//                }
-//            } else if (r_down.contains(x, y)) {
-//                SoundManager.getInstance().play(4);
-//                ax = px;
-//                ay = py - 20;
-//                if (startskill3 == 3) {
-//                    m_circle.setPosition(px - cir, py - cir - 20);
-//                }
-//            }
-//        }
-
-//        Rect skill_pos = new Rect( (float) (width * 0.75), (float) (height * 0.95),
-//                (float) (width * 0.75)+100, (float) (height * 0.95)+50 );
-//        //필살기 터치
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            if (r_left.contains(x, y)) {
-//            }
-//        }
-
-        //플레이어3 필살기 자기장 같이 이동
-//        if (startskill3 == 3 && r_left.contains(x, y) == false
-//                && r_right.contains(x, y) == false
-//                && r_down.contains(x, y) == false
-//                && r_up.contains(x, y) == false) {
-//            m_circle.setPosition(x - 280, y - 280);
-//            m_player.setPosition(x - 90, y - 90);
-//        } else if (difX < 250 && difY < 250) {
-//            //m_circle.setPosition(a - 280, b - 280);
-//            m_player.setPosition(x - 90, y - 90);
-//            //a=x;b=y;
-//        }
-//        return true;
         if (playertype == 2) {
-            m_circle.setPosition(m_player.getX() -  m_circle.m_bitmap.getHeight()/2.8,
-                    m_player.getY() - m_circle.m_bitmap.getHeight()/4);
+            m_circle.setPosition(m_player.getX() - m_circle.m_bitmap.getHeight() / 2.8,
+                    m_player.getY() - m_circle.m_bitmap.getHeight() / 4);
         }
         return true;
     }
@@ -698,12 +637,6 @@ public class GameState implements IState {
     public void MakeSkill2_Explosion() {
         SoundManager.getInstance().play(3);
 
-//        for (int i = 0; i < 10; i++) {
-//            Random r = new Random();
-//            //이 부분이 폭발처리
-//            m_skill2_list.add(new Skill2_Enemy_Explosion(r.nextInt(800), r.nextInt(1500)));
-//
-//        }
 
         for (int i = m_enemlist.size() - 1; i >= 0; i--) {
             //이 부분이 폭발처리
@@ -774,7 +707,7 @@ public class GameState implements IState {
                     return;
                 }
             }
-        }
+    }
 
         //왼쪽 미사일 충돌 구현
         for (int i = m_lpmslist.size() - 1; i >= 0; i--) {
@@ -846,14 +779,13 @@ public class GameState implements IState {
                     m_enemmslist.remove(i);
 
                     //이 부분이 플레이어를 폭발처리
-                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_player.getX(), m_player.getY()-30));
+                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_player.getX(), m_player.getY() - 30));
                     m_player.destroyPlayer();
                     if (m_player.getLife() <= 0)
                         AppManager.getInstance().getGameView().changeGameState(ExitState.getInstance());
                 }
             }
         }
-
 
 
         //랜덤박스충돌
@@ -878,7 +810,7 @@ public class GameState implements IState {
                             random_flag = 1;
                         } else if (m_randomboxList.get(i).boxtype == 1) {//발사속도 +200
                             //SoundManager.getInstance().play(8);
-                            missileSpeed -= 200;
+                            missileSpeed -= 500;
                             nowMissileSpeed += 0.2f;
                             randName = "Attack Speed +20%";
                             random_flag = 1;
@@ -897,7 +829,7 @@ public class GameState implements IState {
                             randName = "Life -1";
                             Toast myToast = Toast.makeText(mcontext, randName, Toast.LENGTH_SHORT);
                             myToast.show();
-                            m_player.destroyPlayer();
+                            //m_player.destroyPlayer();
                         } else if (m_randomboxList.get(i).boxtype == 5) {//발사속도 - 100
                             //SoundManager.getInstance().play(9);
                             missileSpeed += 100;
@@ -912,12 +844,11 @@ public class GameState implements IState {
                             missileState--;
                             randName = "Missile Downgrade";
                         }
-                        if(random_flag == 1) //좋은 아이템이면 파란폭발
+                        if (random_flag == 1) //좋은 아이템이면 파란폭발
                         {
                             //SoundManager.getInstance().play(8);
                             m_explosion_blue.add(new Explosion_Blue(m_player.getX(), m_player.getY()));
-                        }
-                        else //나쁜 아이템이면
+                        } else //나쁜 아이템이면
                         {
                             //SoundManager.getInstance().play(9);
                             m_skill2_list.add(new Skill2_Enemy_Explosion(m_player.getX(), m_player.getY()));

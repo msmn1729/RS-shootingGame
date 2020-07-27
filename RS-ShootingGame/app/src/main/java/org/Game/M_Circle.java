@@ -12,7 +12,7 @@ public class M_Circle extends SpriteAnimation {
     public M_Circle(Bitmap bitmap) {
         super(bitmap);
         //this.initSpriteData(555, 555, 20, 9);
-        this.initSpriteData(this.m_bitmap.getWidth()/16, this.m_bitmap.getWidth(), 20, 9);
+        this.initSpriteData(this.m_bitmap.getWidth()/16, this.m_bitmap.getHeight(), 20, 9);
         // this.setPosition(500, 1400);
     }
 

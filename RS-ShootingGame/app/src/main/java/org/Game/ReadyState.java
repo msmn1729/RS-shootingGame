@@ -13,6 +13,8 @@ import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
 public class ReadyState implements IState {
+    int width = AppManager.getInstance().getDeviceSize().x;
+    int height = AppManager.getInstance().getDeviceSize().y;
     Point point = new Point();
     public BackGround bg_ready;
     Bitmap btn_start;
@@ -23,11 +25,12 @@ public class ReadyState implements IState {
 
 
     private static ReadyState ready = new ReadyState();
-    public ReadyState(){
+
+    public ReadyState() {
 
     }
 
-    public static ReadyState getInstance(){
+    public static ReadyState getInstance() {
         return ready;
     }
 
@@ -45,16 +48,16 @@ public class ReadyState implements IState {
         bg_ready = new BackGround(0);
 
         btn_start = AppManager.getInstance().getBitmap(R.drawable.startbtn2);
-        btn_start = Bitmap.createScaledBitmap(btn_start, point.x/2, point.y/8, true);
+        btn_start = Bitmap.createScaledBitmap(btn_start, point.x / 2, point.y / 8, true);
 
         btn_rank = AppManager.getInstance().getBitmap(R.drawable.rankbtn);
-        btn_rank = Bitmap.createScaledBitmap(btn_rank, point.x/2, point.y/8, true);
+        btn_rank = Bitmap.createScaledBitmap(btn_rank, point.x / 2, point.y / 8, true);
 
         btn_set = AppManager.getInstance().getBitmap(R.drawable.setbtn);
-        btn_set = Bitmap.createScaledBitmap(btn_set, point.x/2, point.y/8, true);
+        btn_set = Bitmap.createScaledBitmap(btn_set, point.x / 2, point.y / 8, true);
 
         btn_exit = AppManager.getInstance().getBitmap(R.drawable.exitbtn);
-        btn_exit = Bitmap.createScaledBitmap(btn_exit, point.x/2, point.y/8, true);
+        btn_exit = Bitmap.createScaledBitmap(btn_exit, point.x / 2, point.y / 8, true);
 
     }
 
@@ -73,11 +76,16 @@ public class ReadyState implements IState {
     public void Render(Canvas canvas) {
         bg_ready.Draw(canvas);
 
-        canvas.drawBitmap(shoot, 140, 200, null);
-        canvas.drawBitmap(btn_start,point.x/4, (point.y/8)*4-20, null);
-        canvas.drawBitmap(btn_rank, point.x/4, (point.y/8) * 5 -30, null);
-        canvas.drawBitmap(btn_set,point.x/4,(point.y/8) * 6 -40 , null);
-        canvas.drawBitmap(btn_exit, point.x/4, (point.y/8) * 7 - 50, null);
+//        canvas.drawBitmap(shoot, 140, 200, null);
+//        canvas.drawBitmap(btn_start,point.x/4, (point.y/8)*4-20, null);
+//        canvas.drawBitmap(btn_rank, point.x/4, (point.y/8) * 5 -30, null);
+//        canvas.drawBitmap(btn_set,point.x/4,(point.y/8) * 6 -40 , null);
+//        canvas.drawBitmap(btn_exit, point.x/4, (point.y/8) * 7 - 50, null);
+        canvas.drawBitmap(shoot, (float) (width * 0.13), (float) (height * 0.11), null);
+        canvas.drawBitmap(btn_start, point.x / 4, (point.y / 8) * 4 - 20, null);
+        canvas.drawBitmap(btn_rank, point.x / 4, (point.y / 8) * 5 - 30, null);
+        canvas.drawBitmap(btn_set, point.x / 4, (point.y / 8) * 6 - 40, null);
+        canvas.drawBitmap(btn_exit, point.x / 4, (point.y / 8) * 7 - 50, null);
 
     }
 
@@ -88,35 +96,31 @@ public class ReadyState implements IState {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int x = (int)event.getX();
-        int y = (int)event.getY();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
 
-        //버튼 범위설정
-        Rect r_start = new Rect(point.x/4,(point.y/8) * 4 - 20,(point.x/4)+point.x/2,(point.y/8)*4 - 20 + (point.y/8));
-        Rect r_rank = new Rect(point.x/4,(point.y/8) * 5 - 30,(point.x/4)+point.x/2,(point.y/8)*5 - 30 + (point.y/8));
-        Rect r_set = new Rect(point.x/4,(point.y/8) * 6 - 45,(point.x/4)+point.x/2,(point.y/8)*6 - 45 + (point.y/8));
-        Rect r_exit = new Rect(point.x/4,(point.y/8)*7 - 50,(point.x/4) + (point.x/2),(point.y/8)*7 - 50 + (point.y/8));
+            //버튼 범위설정
+            Rect r_start = new Rect(point.x / 4, (point.y / 8) * 4 - 20, (point.x / 4) + point.x / 2, (point.y / 8) * 4 - 20 + (point.y / 8));
+            Rect r_rank = new Rect(point.x / 4, (point.y / 8) * 5 - 30, (point.x / 4) + point.x / 2, (point.y / 8) * 5 - 30 + (point.y / 8));
+            Rect r_set = new Rect(point.x / 4, (point.y / 8) * 6 - 45, (point.x / 4) + point.x / 2, (point.y / 8) * 6 - 45 + (point.y / 8));
+            Rect r_exit = new Rect(point.x / 4, (point.y / 8) * 7 - 50, (point.x / 4) + (point.x / 2), (point.y / 8) * 7 - 50 + (point.y / 8));
 
 
-        if(event.getAction() == MotionEvent.ACTION_DOWN){
-            if(r_start.contains(x,y)){
-                //SoundManager.getInstance().play(4);
-                AppManager.getInstance().getGameView().changeGameState(SelectState.getInstance());
-            }
-            else if(r_rank.contains(x,y)) {
-                //SoundManager.getInstance().play(4);
-                AppManager.getInstance().getGameView().changeGameState(new RankState());
-            }
-
-            else if(r_set.contains(x,y))
-            {
-                //SoundManager.getInstance().play(4);
-                AppManager.getInstance().getGameView().changeGameState(SettingState.getInstance());
-            }
-            else if (r_exit.contains(x, y))
-            {
-                //SoundManager.getInstance().play(4);
-                System.exit(0);
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (r_start.contains(x, y)) {
+                    SoundManager.getInstance().play(4);
+                    AppManager.getInstance().getGameView().changeGameState(SelectState.getInstance());
+                } else if (r_rank.contains(x, y)) {
+                    SoundManager.getInstance().play(4);
+                    AppManager.getInstance().getGameView().changeGameState(new RankState());
+                } else if (r_set.contains(x, y)) {
+                    SoundManager.getInstance().play(4);
+                    AppManager.getInstance().getGameView().changeGameState(SettingState.getInstance());
+                } else if (r_exit.contains(x, y)) {
+                    SoundManager.getInstance().play(4);
+                    System.exit(0);
+                }
             }
         }
         return true;

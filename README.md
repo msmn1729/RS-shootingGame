@@ -5,8 +5,7 @@
 ![imge](https://img.shields.io/badge/Language-Java-yellow)
 ![imge](https://img.shields.io/badge/Tools-AndroidStudio-red)
 
-2020.07.20
-
+- 2020.07.20 Developed.
 - 안드로이드 기반의 실시간 랭킹시스템 슈팅 게임입니다.💫  
 - Android-based real-time ranking system shooting game.
 

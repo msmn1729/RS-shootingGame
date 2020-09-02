@@ -7,6 +7,7 @@
 
 2020.07.20
 
-안드로이드 기반의 랭킹시스템 슈팅 게임.
+- 안드로이드 기반의 실시간 랭킹시스템 슈팅 게임입니다.💫  
+- Android-based real-time ranking system shooting game.
 
-Android-based Ranking System shooting game. 
+

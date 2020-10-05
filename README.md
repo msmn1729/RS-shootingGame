@@ -9,9 +9,11 @@
 
 ## 프로그램 소개:memo:
 - 2020.07.20 Developed.
-- 안드로이드 기반의 실시간 랭킹시스템 슈팅 게임입니다.  
-(Android-based real-time ranking system shooting game.)
+
+- 안드로이드 기반의 실시간 랭킹시스템 슈팅 게임입니다. (Android-based real-time ranking system shooting game.)
+
 - 고전풍의 UI와 8비트 배경음악을 삽입하여 레트로 감성을 구현했습니다.
+
 - 랜덤 아이템 박스(버프 or 디버프)컨텐츠를 통해 플레이어의 재미를 높히고자 했습니다. :smile:
 
 ------

@@ -6,7 +6,7 @@ import android.view.SurfaceHolder;
 public class GameViewThread extends Thread {
     //접근을 위한 멤버 변수
     private SurfaceHolder m_surfaceHolder;
-    private GameView m_gameView;
+    public GameView m_gameView;
 
     //스레드 실행 상태 멤버 변수
     private boolean m_run = false;
@@ -29,7 +29,7 @@ public class GameViewThread extends Thread {
                 synchronized (m_surfaceHolder){
                     _canvas = m_surfaceHolder.lockCanvas(null);
                     if (_canvas == null) break;
-                    m_gameView.onDraw(_canvas);
+                    m_gameView.draw(_canvas);
                 }
             }finally {
                 if(_canvas != null)

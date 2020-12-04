@@ -25,12 +25,9 @@ public class ReadyState implements IState {
     Bitmap btn_exit;
     Bitmap shoot;
 
-
     private static ReadyState ready = new ReadyState();
 
-    public ReadyState() {
-
-    }
+    public ReadyState() {}
 
     public static ReadyState getInstance() {
         return ready;
@@ -42,10 +39,6 @@ public class ReadyState implements IState {
         point.y = AppManager.getInstance().getDeviceSize().y;
 
         shoot = AppManager.getInstance().getBitmap(R.drawable.shootinggame);
-//        shoot = Bitmap.createScaledBitmap(shoot, point.x, point.y, true);
-
-//        bg_ready = AppManager.getInstance().getBitmap(R.drawable.back1);
-//        bg_ready = Bitmap.createScaledBitmap(bg_ready, point.x, point.y, true);
 
         bg_ready = new BackGround(0);
 
@@ -77,16 +70,17 @@ public class ReadyState implements IState {
     @Override
     public void Render(Canvas canvas) {
         bg_ready.Draw(canvas);
+
         canvas.drawBitmap(shoot, (float) (width * 0.13), (float) (height * 0.11), null);
         canvas.drawBitmap(btn_start, point.x / 4, (point.y / 8) * 4 - 20, null);
         canvas.drawBitmap(btn_rank, point.x / 4, (point.y / 8) * 5 - 30, null);
         canvas.drawBitmap(btn_set, point.x / 4, (point.y / 8) * 6 - 40, null);
         canvas.drawBitmap(btn_exit, point.x / 4, (point.y / 8) * 7 - 50, null);
-
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
         return false;
     }
 
@@ -121,5 +115,4 @@ public class ReadyState implements IState {
         }
         return true;
     }
-
 }

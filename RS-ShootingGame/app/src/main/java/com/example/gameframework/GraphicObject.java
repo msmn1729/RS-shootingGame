@@ -2,11 +2,13 @@ package com.example.gameframework;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public class GraphicObject {
     public Bitmap m_bitmap;
     protected int m_x;
     protected int m_y;
+    public Rect m_BoundBox = new Rect(); //추가한 것
 
     public GraphicObject(Bitmap bitmap){
         m_bitmap = bitmap;

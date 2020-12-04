@@ -41,7 +41,6 @@ public class InsertView extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.insertview);
         SoundManager.getInstance().play(2);
-        //SoundManager.getInstance().play(2);
         //아이디 값
         et_playerID = findViewById(R.id.et_playerID);
 
@@ -50,14 +49,9 @@ public class InsertView extends AppCompatActivity {
         btn_record.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
-//                System.out.println("랭킹 등록 성공!");
-
                 Toast.makeText(getApplicationContext(), "랭킹 등록 성공!", Toast.LENGTH_SHORT).show();
                 setContentView(new GameView(mcontext,2));
-
-//                setContentView(new GameView(mcontext,2));
                 playerID = et_playerID.getText().toString();
-                //System.out.println("이름 : " + playerID);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date time = new Date();
 
@@ -71,11 +65,9 @@ public class InsertView extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
-                                System.out.println("랭킹 등록 성공!");
                                 Toast.makeText(getApplicationContext(), "랭킹 등록 성공!", Toast.LENGTH_SHORT).show();
                                 setContentView(new GameView(mcontext,2));
                             } else {
-                                System.out.println("랭킹 등록에 실패했습니다.");
                                 Toast.makeText(getApplicationContext(), "랭킹 등록에 실패했습니다.", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
@@ -92,7 +84,6 @@ public class InsertView extends AppCompatActivity {
                 }else if(plainType == 2){
                     plainName = "TYPE3";
                 }
-                //Random random = new Random(); //임시 score 0~9999 랜덤값
                 RankRequest rankRequest = new RankRequest(playerID, plainName,
                         p_score + "", recordDate,
                         responseListener);

@@ -19,7 +19,6 @@ public class RandomBox extends SpriteAnimation {
     public int boxtype;
 
     public Rect m_BoundBox = new Rect();
-    long LastShoot = System.currentTimeMillis();
 
     int speed;
 
@@ -31,15 +30,12 @@ public class RandomBox extends SpriteAnimation {
 
     void move() {
         m_y += r;
-//        m_y += speed;
         if (m_y > height * 1.03)
             state = STATE_OUT;
     }
 
 
     public void Update() {
-//        if (m_y > height * 0.5)
-//            state = STATE_OUT;
     }
 
     @Override

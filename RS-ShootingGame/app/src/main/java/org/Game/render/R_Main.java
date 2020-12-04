@@ -17,7 +17,5 @@ public class R_Main extends GraphicObject {
         int width = AppManager.getInstance().getDeviceSize().x;
         int height = AppManager.getInstance().getDeviceSize().y;
         canvas.drawBitmap(m_bitmap, (int) (width * 0.51), (int) (height * 0.89), null);
-        //canvas.drawBitmap(m_bitmap, 535, 1550, null);
-
     }
 }

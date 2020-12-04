@@ -9,8 +9,6 @@ public class Player_1 extends Player{
 
         this.initSpriteData(this.m_bitmap.getWidth()/6, this.m_bitmap.getHeight(), 5, 6);
         this.setPosition(width*0.47, height*0.8);
-
-
     }
 
     public void Update(long GameTime){

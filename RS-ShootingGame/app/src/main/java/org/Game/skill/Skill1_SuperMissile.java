@@ -10,7 +10,6 @@ public class Skill1_SuperMissile extends Missile {
     int height = AppManager.getInstance().getDeviceSize().y;
     public Skill1_SuperMissile(int x, int y, int speed) {
         super(AppManager.getInstance().getBitmap(R.drawable.super_missile));
-//        this.setPosition(-(width*0.095),height + m_bitmap.getHeight());
         this.setPosition(width*0.55 - m_bitmap.getWidth()/2, height*0.1+ m_bitmap.getHeight());
         this.speed = speed;
     }
@@ -24,9 +23,5 @@ public class Skill1_SuperMissile extends Missile {
         m_BoundBox.top = m_y;
         m_BoundBox.right = (int) (m_x + m_bitmap.getWidth() - width*0.361);
         m_BoundBox.bottom = m_y + m_bitmap.getHeight() ;
-//        m_BoundBox.left = 0;
-//        m_BoundBox.top = 0;
-//        m_BoundBox.right = 2000;
-//        m_BoundBox.bottom = 2000;
     }
 }

@@ -44,13 +44,6 @@ public class SpriteAnimation extends GraphicObject{
 
     //시간이 지남에 따라 그려야하는 프레임을 바꾸는 Update 메소드
     public void Update(long gameTime){
-//        if(gameTime > m_frameTimer + m_fps){
-//            m_frameTimer = gameTime;
-//            m_currentFrame += 1;
-//
-//            //프레임 순환
-//            if(m_currentFrame >= m_iFrames)m_currentFrame = 0;
-//        }
         if (mbEnd == false) {
             if (gameTime > m_frameTimer + m_fps) {
                 m_frameTimer = gameTime;

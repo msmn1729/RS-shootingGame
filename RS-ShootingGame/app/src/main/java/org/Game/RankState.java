@@ -1,12 +1,12 @@
 package org.Game;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,10 +17,7 @@ import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.SoundManager;
 
-import org.Game.render.R_Back;
-import org.Game.render.R_BackGround;
-import org.Game.render.R_Main;
-import org.Game.render.R_Next;
+import org.Game.render.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +27,7 @@ import static com.example.gameframework.MainActivity.mcontext;
 public class RankState implements IState {
     int width = AppManager.getInstance().getDeviceSize().x;
     int height = AppManager.getInstance().getDeviceSize().y;
-    private R_BackGround r_background;
+    public R_BackGround r_background;
     private R_Main r_main;
     private R_Next r_next;
     private R_Back r_back;
@@ -42,10 +39,7 @@ public class RankState implements IState {
     String[] p_recordDate = new String[1000];
     public RequestQueue mQueue;
 
-    public RankState()
-    {
-
-    }
+    public RankState() {}
 
     private static RankState rank = new RankState();
 
@@ -57,7 +51,7 @@ public class RankState implements IState {
     @Override
     public void Init() {
         jsonParse();
-        r_background = new R_BackGround(0);
+        r_background = new R_BackGround();
         r_main = new R_Main();
         r_next = new R_Next();
         r_back = new R_Back();
@@ -65,8 +59,6 @@ public class RankState implements IState {
 
     @Override
     public void Render(Canvas canvas) {
-
-        //canvas.drawColor(Color.BLACK);
         r_background.Draw(canvas);
         r_main.Draw(canvas);
         if (realflag == 1) {
@@ -85,51 +77,38 @@ public class RankState implements IState {
         p2.setColor(Color.YELLOW);
         p3.setColor(Color.RED);
 
-        int y = 30;
-        canvas.drawText("! SHOW ME THE RANK !", (float) (width*0.11),
-                (float) (height*0.057), p3);
+        canvas.drawText("! SHOW ME THE RANK !", (float) (width*0.11), (float) (height*0.057), p3);
+        drawCanvas (canvas, p2, 0.1257,0, "NAME", "TYPE", "SCORE", "DATE");
 
-        //count = 20; //숫자 크면 화면 넘어감(스크롤 기능 추가예정)
-        canvas.drawText("NAME", (float) (width*0.1), (float) (height*0.1257), p2);
-        canvas.drawText("TYPE", (float) (width*0.34), (float) (height*0.1257), p2);
-        canvas.drawText("SCORE", (float) (width*0.495), (float) (height*0.1257), p2);
-        canvas.drawText("DATE", (float) (width*0.647), (float) (height*0.1257), p2);
+        int y = 30;
         int i = 0;
         if (realflag == 1) {
-
-            for (i = 0; i < count; i++) {
+            for (i = 0; i < 20; i++) {
                 canvas.drawText(String.valueOf(i + 1), (float) (width*0.0095), (float) (height*0.1542 + y), p2);
-                canvas.drawText(String.valueOf(p_ID[i]), (float) (width*0.1), (float) (height*0.1542 + y), p);
-                canvas.drawText(String.valueOf(p_AirplaneType[i]), (float) (width*0.34), (float) (height*0.1542 + y), p);
-                canvas.drawText(String.valueOf(p_Score[i]), (float) (width*0.495), (float) (height*0.1542 + y), p);
-                canvas.drawText(String.valueOf(p_recordDate[i]), (float) (width*0.647), (float) (height*0.1542 + y), p);
+                drawCanvas (canvas, p, 0.1542, y, String.valueOf(p_ID[i]), String.valueOf(p_AirplaneType[i]),
+                        String.valueOf(p_Score[i]), String.valueOf(p_recordDate[i]));
                 y += height*0.0365;
-                if (i >= 19) {
-                    break;
-                }
             }
         } else if (realflag == 2) {
             for (i = 20; i < count; i++) {
                 canvas.drawText(String.valueOf(i + 1), (float) (width*0.0095), (float) (height*0.1542 + y), p2);
-                canvas.drawText(String.valueOf(p_ID[i]), (float) (width*0.1), (float) (height*0.1542 + y), p);
-                canvas.drawText(String.valueOf(p_AirplaneType[i]), (float) (width*0.34), (float) (height*0.1542 + y), p);
-                canvas.drawText(String.valueOf(p_Score[i]), (float) (width*0.495), (float) (height*0.1542 + y), p);
-                canvas.drawText(String.valueOf(p_recordDate[i]), (float) (width*0.647), (float) (height*0.1542 + y), p);
+                drawCanvas (canvas, p, 0.1542, y, String.valueOf(p_ID[i]), String.valueOf(p_AirplaneType[i]),
+                        String.valueOf(p_Score[i]), String.valueOf(p_recordDate[i]));
                 y += height*0.0365;
-                if (i >= 39) {
-                    break;
-                }
             }
         }
     }
 
-    /**
-     * 랭킹 읽어오는 메소드
-     */
+    public void drawCanvas (Canvas canvas, Paint p, double rate, int y, String name, String type, String score, String date) {
+        canvas.drawText(name, (float) (width*0.1), (float) (height*rate + y), p);
+        canvas.drawText(type, (float) (width*0.34), (float) (height*rate + y), p);
+        canvas.drawText(score, (float) (width*0.495), (float) (height*rate + y), p);
+        canvas.drawText(date, (float) (width*0.647), (float) (height*rate + y), p);
+    }
+
     public void jsonParse() {
         mQueue = Volley.newRequestQueue(mcontext);
 
-//        String url = "https://whdgurtpqmssju.cafe24.com/post/ShootingRank.php";
         String url = "http://msmn.dothome.co.kr/GetRanking.php";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -137,7 +116,6 @@ public class RankState implements IState {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            //"playerID""playerAirplaneType""playerScore""recordDate"
                             JSONArray jsonArray = response.getJSONArray("response");
                             String playerID, playerAirplaneType, playerScore, recordDate;
                             for (int i = 0; i < jsonArray.length(); i++) { //수정
@@ -153,11 +131,8 @@ public class RankState implements IState {
                                 p_Score[i] = playerScore;
                                 p_recordDate[i] = recordDate;
                                 count++;
-                                if (playerScore == null) {
+                                if (playerScore == null)
                                     break;
-                                }
-                                //  Log.d(TAG, "onResponse: 성공, rank 결과 : \n" + rank);
-                                //Log.d(TAG, "onResponse: 성공, score결과\n" + score);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -169,21 +144,16 @@ public class RankState implements IState {
                 error.printStackTrace();
             }
         });
-
         mQueue.add(request);
     }
 
     @Override
-    public void Destroy() {
-
-    }
+    public void Destroy() {}
 
     @Override
     public void Update() {
-        long GameTime = System.currentTimeMillis();
-        r_background.Update(GameTime);
+        r_background.Update();
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -211,6 +181,7 @@ public class RankState implements IState {
                 count = 0;
             } else if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN && scoredata <= 20) {
                 SoundManager.getInstance().play(4);
+
             }
         } else if (realflag == 2) {
             if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -227,11 +198,9 @@ public class RankState implements IState {
             AppManager.getInstance().getGameView().changeGameState
                     (new ReadyState());
         }
-
         return true;
     }
 }
-
 
 
 

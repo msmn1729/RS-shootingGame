@@ -48,19 +48,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
 
         m_thread = new GameViewThread(getHolder(), this);
-//        m_Image = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.background2));
-//        m_spr = new SpriteAnimation(BitmapFactory.decodeResource(getResources(), R.drawable.walk));//이미지 어디?
-//        m_spr.initSpriteData(180, 300, 5 ,4);
     }
 
     public void onDraw(Canvas canvas){
-//        Bitmap _scratch = BitmapFactory.decodeResource(getResources(),R.drawable.icon);
         canvas.drawColor(Color.BLACK);
-//        canvas.drawBitmap(_scratch, 10, 10, null);
         m_state.Render(canvas);
-//        m_Image.Draw(canvas);
-//        m_spr.Draw(canvas);
-
     }
 
     @Override
@@ -93,8 +85,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     //지속적으로 실행하여, 갱신이 수행되므로 run에서 Update를 수행
     public void Update(){
-        long gameTime = System.currentTimeMillis();
-//        m_spr.Update(gameTime);//프레임에 대한 변화
         m_state.Update();
     }
 

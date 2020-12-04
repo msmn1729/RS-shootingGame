@@ -1,7 +1,6 @@
 package org.Game.enemy;
 
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.SpriteAnimation;
@@ -21,8 +20,6 @@ public class Enemy extends SpriteAnimation {
     public static final int STATE_NORMAL = 0;
     public static final int STATE_OUT = 1;
     public int state = STATE_NORMAL;
-
-    public Rect m_BoundBox = new Rect();
 
     long LastShoot = System.currentTimeMillis();
 

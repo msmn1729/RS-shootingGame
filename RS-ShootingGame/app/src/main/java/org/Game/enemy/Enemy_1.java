@@ -10,8 +10,6 @@ public class Enemy_1 extends Enemy {
         hp = 10;
         speed = 2;
         this.initSpriteData(this.m_bitmap.getWidth()/6, this.m_bitmap.getHeight(), (int) (speed*2), 6);
-
-
     }
 
     public void Update(long GameTime){

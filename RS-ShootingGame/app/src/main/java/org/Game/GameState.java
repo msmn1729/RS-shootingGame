@@ -27,11 +27,9 @@ import static com.example.gameframework.MainActivity.mcontext;
 public class GameState implements IState {
     public Player m_player;
     private BackGround m_background;
-    private GraphicObject m_keypad;
     private GraphicObject m_life_full_image, m_life_empty_image;
     private GraphicObject m_skill_icon, m_skill_btn_icon;
     public static int playertype; //비행기 타입
-    //public Enemy m_enemy;
     private M_Circle m_circle;
 
     public static int killcnt = 0; //적 처치수
@@ -58,15 +56,15 @@ public class GameState implements IState {
     int width = AppManager.getInstance().getDeviceSize().x;
     int height = AppManager.getInstance().getDeviceSize().y;
 
-    ArrayList<Enemy> m_enemlist = new ArrayList<Enemy>();//적리스트
-    ArrayList<Missile_Player> m_pmslist = new ArrayList<Missile_Player>();//미사일 리스트
-    ArrayList<Missile_Player> m_lpmslist = new ArrayList<Missile_Player>();//왼쪽 미사일 리스트
-    ArrayList<Missile_Player> m_rpmslist = new ArrayList<Missile_Player>();//오른쪽 미사일 리스트
-    ArrayList<Missile> m_enemmslist = new ArrayList<Missile>();//적 미사일 리스트
-    ArrayList<RandomBox> m_randomboxList = new ArrayList<RandomBox>();//랜덤 박스
+    ArrayList<Enemy> m_enemlist = new ArrayList<>();//적리스트
+    ArrayList<Missile_Player> m_pmslist = new ArrayList<>();//미사일 리스트
+    ArrayList<Missile_Player> m_lpmslist = new ArrayList<>();//왼쪽 미사일 리스트
+    ArrayList<Missile_Player> m_rpmslist = new ArrayList<>();//오른쪽 미사일 리스트
+    ArrayList<Missile> m_enemmslist = new ArrayList<>();//적 미사일 리스트
+    ArrayList<RandomBox> m_randomboxList = new ArrayList<>();//랜덤 박스
     //필살기1, 2 어레이리스트
-    ArrayList<Skill1_SuperMissile> m_skill1_list = new ArrayList<Skill1_SuperMissile>();//미사일 위치
-    ArrayList<Skill2_Enemy_Explosion> m_skill2_list = new ArrayList<Skill2_Enemy_Explosion>(); //폭발할 적 리스트
+    ArrayList<Skill1_SuperMissile> m_skill1_list = new ArrayList<>();//미사일 위치
+    ArrayList<Skill2_Enemy_Explosion> m_skill2_list = new ArrayList<>(); //폭발할 적 리스트
     //파란 폭발
     ArrayList<Explosion_Blue> m_explosion_blue = new ArrayList<Explosion_Blue>();
 
@@ -109,7 +107,6 @@ public class GameState implements IState {
     public void Init() {
         //게임시작시 모든 적을 제거, 죽인 수 초기화 후 진행
         allclear();
-        //m_circle = new M_Circle(AppManager.getInstance().getBitmap(R.drawable.circle_4));
 
         killcnt = 0;
         missileSpeed = 1000;
@@ -119,23 +116,19 @@ public class GameState implements IState {
         skill_cnt = 3; //초기 필살기 개수
 
         if (playertype == 0) {
-            m_player = new Player(AppManager.getInstance().getBitmap(R.drawable.player1));
+            m_player = new Player_1();
             m_skill_icon = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.skill1_icon));
-//            m_skill_icon.setPosition(width * 0.051, height * 0.86);
-//            m_skill_icon.setPosition(m_skill_btn_icon.m_bitmap.getWidth(), m_skill_btn_icon.getY() + m_skill_btn_icon.m_bitmap.getWidth());
         } else if (playertype == 1) {
-            m_player = new Player(AppManager.getInstance().getBitmap(R.drawable.player2));
+            m_player = new Player_2();
             m_skill_icon = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.skill2_icon));
-            //m_skill_icon.setPosition(width * 0.045, height * 0.88);
         } else if (playertype == 2) {
-            m_player = new Player(AppManager.getInstance().getBitmap(R.drawable.player3));
+            m_player = new Player_3();
             m_skill_icon = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.skill3_icon));
         }
 
         m_life_full_image = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.heart_full));
         m_life_empty_image = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.heart_empty));
         m_skill_btn_icon = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.skill_btn_icon));
-        m_keypad = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.keypad));
         m_circle = new M_Circle(AppManager.getInstance().getBitmap(R.drawable.circle_5));
         m_background = new BackGround(2);
 
@@ -307,7 +300,6 @@ public class GameState implements IState {
                 m_life_empty_image.setPosition(width * 0.02 + width * 0.105 * i, height * 0.01);
                 m_life_empty_image.Draw(canvas);
             }
-
         }
 
         //필살기아이콘
@@ -344,12 +336,6 @@ public class GameState implements IState {
         canvas.drawText("Attack Speed " + String.format("%.1f", nowMissileSpeed), 0,
                 (float) (m_skill_btn_icon.getY() - height * 0.01), p);
         if (cooldownTime >= 5 && skill_cnt > 0) {
-            //canvas.drawText("Ready!", (float) (width * 0.6), (float) (height * 0.98), p);
-            //m_keypad.setPosition(0, (int) (height * 0.7));
-            //m_skill_icon.setPosition(width * 0.051, height * 0.86);
-            //스킬버튼 상대좌표
-            //m_skill_btn_icon.setPosition(width * 0.01, (int) (height * 0.85));
-            //m_skill_icon.Draw(canvas); //필살기 사용가능하면 화면 표시
             canvas.drawText("Ready!", (float) (width * 0.35), (float) (height * 0.98), p);
         } else {
             if (cooldownTime >= 5) cooldownTime = 5;
@@ -548,10 +534,15 @@ public class GameState implements IState {
         //allclear();
     }
 
+    /**
+     * 충돌 처리하는 메소드
+     */
     public void CheckCollision() {
 
         //필살기1 충돌
         if (playertype == 0) {
+//                    CheckCollisionBoxToBox(m_skill1_list, m_enemlist);
+            System.out.println(m_skill1_list.clone());
             for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
                 for (int j = m_enemlist.size() - 1; j >= 0; j--) {
                     if (CollisionManager.CheckBoxToBox(m_skill1_list.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
@@ -588,20 +579,21 @@ public class GameState implements IState {
         }
 
         //내 미사일과 적기 충돌시
-        for (int i = m_pmslist.size() - 1; i >= 0; i--) {
-            for (int j = m_enemlist.size() - 1; j >= 0; j--) {
-                if (CollisionManager.CheckBoxToBox(m_pmslist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
-                    //이 부분이 폭발처리
-                    System.out.println("내 미사일 적기랑 충돌");
-                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(j).getX(), m_enemlist.get(j).getY()));
-                    m_pmslist.remove(i);
-                    m_enemlist.remove(j);
-                    SoundManager.getInstance().play(5);
-                    killcnt++;
-                    return;
-                }
-            }
-    }
+//        CheckCollisionBoxToBox(m_pmslist, m_enemlist);
+//        for (int i = m_pmslist.size() - 1; i >= 0; i--) {
+//            for (int j = m_enemlist.size() - 1; j >= 0; j--) {
+//                if (CollisionManager.CheckBoxToBox(m_pmslist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
+//                    //이 부분이 폭발처리
+//                    System.out.println("내 미사일 적기랑 충돌");
+//                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(j).getX(), m_enemlist.get(j).getY()));
+//                    m_pmslist.remove(i);
+//                    m_enemlist.remove(j);
+//                    SoundManager.getInstance().play(5);
+//                    killcnt++;
+//                    return;
+//                }
+//            }
+//        }
 
         //왼쪽 미사일 충돌 구현
         for (int i = m_lpmslist.size() - 1; i >= 0; i--) {
@@ -760,6 +752,40 @@ public class GameState implements IState {
             }
 
         }, 1000);
+    }
+
+    //각 박스들의 충돌 처리하는 메소드
+    public void CheckCollisionBoxToBox(ArrayList box1, ArrayList box2) throws ClassNotFoundException {
+        String str = "Missile_Player";
+//        Class newClass = box1.getClass();
+
+//        ArrayList<> missile_box = box1;
+
+
+
+//            ArrayList<Skill1_SuperMissile> missile_box = box1;
+
+//        ArrayList<Object> missile_box = box1;
+//        ArrayList<Object> enemy_box = box2;
+
+
+//        ArrayList<Enemy> enemy_box = box2;
+//
+//
+//        for (int i = missile_box.size() - 1; i >= 0; i--) {
+//            for (int j = enemy_box.size() - 1; j >= 0; j--) {
+//                if (CollisionManager.CheckBoxToBox(missile_box.get(i).m_BoundBox, enemy_box.get(j).m_BoundBox)) {
+//                    //이 부분이 폭발처리
+//                    System.out.println("내 미사일 적기랑 충돌");
+//                    m_skill2_list.add(new Skill2_Enemy_Explosion(enemy_box.get(j).getX(), enemy_box.get(j).getY()));
+////                    missile_box.remove(i);
+//                    enemy_box.remove(j);
+//                    SoundManager.getInstance().play(5);
+//                    killcnt++;
+//                    return;
+//                }
+//            }
+//        }
     }
 }
 

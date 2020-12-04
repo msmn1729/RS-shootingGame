@@ -7,6 +7,13 @@
 ![imge](https://img.shields.io/badge/Language-Java-yellow)
 ![imge](https://img.shields.io/badge/Tools-AndroidStudio-red)
 
+## Refactoring
+- [x] 랭킹 등록 서버 복구
+
+- ### GameState
+  - [ ] 불필요한 주석제거
+  - [ ] 충돌처리 메소드 추출
+
 ## 프로그램 소개:memo:
 - 2020.07.20 Developed.
 

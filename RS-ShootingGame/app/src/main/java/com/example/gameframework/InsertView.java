@@ -50,6 +50,11 @@ public class InsertView extends AppCompatActivity {
         btn_record.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
+//                System.out.println("랭킹 등록 성공!");
+
+                Toast.makeText(getApplicationContext(), "랭킹 등록 성공!", Toast.LENGTH_SHORT).show();
+                setContentView(new GameView(mcontext,2));
+
 //                setContentView(new GameView(mcontext,2));
                 playerID = et_playerID.getText().toString();
                 //System.out.println("이름 : " + playerID);

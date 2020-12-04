@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,7 +29,7 @@ public class GameState implements IState {
     private GraphicObject m_life_full_image, m_life_empty_image;
     private GraphicObject m_skill_icon, m_skill_btn_icon;
     public static int playertype; //비행기 타입
-    private M_Circle m_circle;
+    private Skill3_Invincible skill3Invincible;
 
     public static int killcnt = 0; //적 처치수
 
@@ -129,7 +128,7 @@ public class GameState implements IState {
         m_life_full_image = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.heart_full));
         m_life_empty_image = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.heart_empty));
         m_skill_btn_icon = new GraphicObject(AppManager.getInstance().getBitmap(R.drawable.skill_btn_icon));
-        m_circle = new M_Circle(AppManager.getInstance().getBitmap(R.drawable.circle_5));
+        skill3Invincible = new Skill3_Invincible(AppManager.getInstance().getBitmap(R.drawable.circle_5));
         m_background = new BackGround(2);
 
         //스킬버튼 상대좌표
@@ -148,7 +147,7 @@ public class GameState implements IState {
             GameTime = System.currentTimeMillis();
             m_player.Update(GameTime);
             m_background.Update(GameTime);
-            m_circle.Update(GameTime);
+            skill3Invincible.Update(GameTime);
 
             //필살기 최대, 최소 조절
             if (skill_cnt < 0) {
@@ -318,7 +317,7 @@ public class GameState implements IState {
 
         //필살기3을 그려줌
         if (startskill3 == 3) {
-            m_circle.Draw(canvas);
+            skill3Invincible.Draw(canvas);
         }
         Paint p = new Paint();
         p.setTextSize((float) (width * 0.07));
@@ -422,7 +421,7 @@ public class GameState implements IState {
                     startskill3 = 3;
                     fflag = 1;
                     if (startflag == 1) {
-                        m_circle.setPosition(m_player.getX(), m_player.getY());
+                        skill3Invincible.setPosition(m_player.getX(), m_player.getY());
                         startflag = 0;
                     }
                 }
@@ -430,8 +429,8 @@ public class GameState implements IState {
         }
 
         if (playertype == 2) {
-            m_circle.setPosition(m_player.getX() - m_circle.m_bitmap.getHeight() / 2.8,
-                    m_player.getY() - m_circle.m_bitmap.getHeight() / 4);
+            skill3Invincible.setPosition(m_player.getX() - skill3Invincible.m_bitmap.getHeight() / 2.8,
+                    m_player.getY() - skill3Invincible.m_bitmap.getHeight() / 4);
         }
         return true;
     }
@@ -530,8 +529,7 @@ public class GameState implements IState {
             //m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemmslist.get(i).getX(), m_enemmslist.get(i).getY())); //이부분 항상 튕김
             m_enemmslist.remove(i);
         }
-        //마지막 정리(필요성 테스트필요) 랜덤박스까지 삭제해버림
-        //allclear();
+
     }
 
     /**
@@ -542,7 +540,6 @@ public class GameState implements IState {
         //필살기1 충돌
         if (playertype == 0) {
 //                    CheckCollisionBoxToBox(m_skill1_list, m_enemlist);
-            System.out.println(m_skill1_list.clone());
             for (int i = m_skill1_list.size() - 1; i >= 0; i--) {
                 for (int j = m_enemlist.size() - 1; j >= 0; j--) {
                     if (CollisionManager.CheckBoxToBox(m_skill1_list.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
@@ -630,7 +627,7 @@ public class GameState implements IState {
         //필살기 스킬3은 일단 폭발처리 x
         if (startskill3 == 3) {
             for (int i = m_enemlist.size() - 1; i >= 0; i--) {
-                if (CollisionManager.CheckBoxToBox(m_circle.m_BoundBox, m_enemlist.get(i).m_BoundBox)) {
+                if (CollisionManager.CheckBoxToBox(skill3Invincible.m_BoundBox, m_enemlist.get(i).m_BoundBox)) {
                     //이 부분이 파란폭발처리
                     m_explosion_blue.add(new Explosion_Blue(m_enemlist.get(i).getX(), m_enemlist.get(i).getY()));
                     m_enemlist.remove(i);
@@ -639,7 +636,7 @@ public class GameState implements IState {
             }
 
             for (int i = m_enemmslist.size() - 1; i >= 0; i--) {
-                if (CollisionManager.CheckBoxToBox(m_circle.m_BoundBox, m_enemmslist.get(i).m_BoundBox)) {
+                if (CollisionManager.CheckBoxToBox(skill3Invincible.m_BoundBox, m_enemmslist.get(i).m_BoundBox)) {
                     //이 부분이 파란폭발처리
                     m_explosion_blue.add(new Explosion_Blue(m_enemmslist.get(i).getX(), m_enemmslist.get(i).getY()));
                     m_enemmslist.remove(i);

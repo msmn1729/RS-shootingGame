@@ -6,10 +6,10 @@ import android.graphics.Rect;
 
 import com.example.gameframework.SpriteAnimation;
 
-public class M_Circle extends SpriteAnimation {
+public class Skill3_Invincible extends SpriteAnimation {
     Rect m_BoundBox = new Rect();
 
-    public M_Circle(Bitmap bitmap) {
+    public Skill3_Invincible(Bitmap bitmap) {
         super(bitmap);
         //this.initSpriteData(555, 555, 20, 9);
         this.initSpriteData(this.m_bitmap.getWidth()/16, this.m_bitmap.getHeight(), 20, 9);

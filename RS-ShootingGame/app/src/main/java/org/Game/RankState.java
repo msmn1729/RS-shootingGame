@@ -40,7 +40,8 @@ public class RankState implements IState {
     String[] p_recordDate = new String[1000];
     public RequestQueue mQueue;
 
-    public RankState() {
+    public RankState()
+    {
 
     }
 
@@ -120,13 +121,16 @@ public class RankState implements IState {
                 }
             }
         }
-
     }
 
+    /**
+     * 랭킹 읽어오는 메소드
+     */
     public void jsonParse() {
         mQueue = Volley.newRequestQueue(mcontext);
 
-        String url = "https://whdgurtpqmssju.cafe24.com/post/ShootingRank.php";
+//        String url = "https://whdgurtpqmssju.cafe24.com/post/ShootingRank.php";
+        String url = "http://msmn.dothome.co.kr/GetRanking.php";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new com.android.volley.Response.Listener<JSONObject>() {

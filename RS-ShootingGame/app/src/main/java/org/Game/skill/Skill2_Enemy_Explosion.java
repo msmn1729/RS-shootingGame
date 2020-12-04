@@ -1,4 +1,4 @@
-package org.Game;
+package org.Game.skill;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.R;

@@ -1,4 +1,4 @@
-package org.Game;
+package org.Game.randomBox;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,9 +16,9 @@ public class RandomBox extends SpriteAnimation {
     public static final int STATE_OUT = 1;
     public int state = STATE_NORMAL;
 
-    protected int boxtype;
+    public int boxtype;
 
-    protected Rect m_BoundBox = new Rect();
+    public Rect m_BoundBox = new Rect();
     long LastShoot = System.currentTimeMillis();
 
     int speed;

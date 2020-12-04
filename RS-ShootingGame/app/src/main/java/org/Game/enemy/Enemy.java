@@ -1,10 +1,13 @@
-package org.Game;
+package org.Game.enemy;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.SpriteAnimation;
+
+import org.Game.GameState;
+import org.Game.missile.Missile_Enemy;
 
 public class Enemy extends SpriteAnimation {
     int height = AppManager.getInstance().getDeviceSize().y;
@@ -19,11 +22,11 @@ public class Enemy extends SpriteAnimation {
     public static final int STATE_OUT = 1;
     public int state = STATE_NORMAL;
 
-    Rect m_BoundBox = new Rect();
+    public Rect m_BoundBox = new Rect();
 
     long LastShoot = System.currentTimeMillis();
 
-    protected int movetype;
+    public int movetype;
 
     public Enemy(Bitmap bitmap) {
         super(bitmap);

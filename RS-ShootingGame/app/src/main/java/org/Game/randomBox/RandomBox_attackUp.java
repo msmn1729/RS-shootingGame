@@ -1,16 +1,14 @@
-package org.Game;
-
-import android.graphics.Bitmap;
+package org.Game.randomBox;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.R;
 
-public class RandomBox_missileSpeedUp extends RandomBox {
-    public RandomBox_missileSpeedUp() {
+public class RandomBox_attackUp extends RandomBox {
+    public RandomBox_attackUp() {
         super(AppManager.getInstance().getBitmap(R.drawable.randombox));
         this.initSpriteData(this.m_bitmap.getWidth(), this.m_bitmap.getHeight(), 1, 1);
         speed = 10;
-        boxtype = 1;
+        boxtype = 2;
     }
     @Override
     public void Update(long gameTime) {

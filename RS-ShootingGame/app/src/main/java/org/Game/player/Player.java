@@ -1,4 +1,4 @@
-package org.Game;
+package org.Game.player;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -10,9 +10,9 @@ import com.example.gameframework.SpriteAnimation;
 public class Player extends SpriteAnimation {
     int width = AppManager.getInstance().getDeviceSize().x;
     int height = AppManager.getInstance().getDeviceSize().y;
-    Rect m_BoundBox = new Rect();
+    public Rect m_BoundBox = new Rect();
 
-    int m_Life = 3;
+    public int m_Life = 3;
 
     public Player(Bitmap bitmap) {
         super(bitmap);

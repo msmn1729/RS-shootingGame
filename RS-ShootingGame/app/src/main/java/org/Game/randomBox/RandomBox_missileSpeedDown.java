@@ -1,20 +1,15 @@
-package org.Game;
-
-import android.graphics.Bitmap;
+package org.Game.randomBox;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.R;
 
-import org.Game.RandomBox;
-
-public class RandomBox_subLife extends RandomBox {
-    public RandomBox_subLife() {
+public class RandomBox_missileSpeedDown extends RandomBox {
+    public RandomBox_missileSpeedDown() {
         super(AppManager.getInstance().getBitmap(R.drawable.randombox));
         this.initSpriteData(this.m_bitmap.getWidth(), this.m_bitmap.getHeight(), 1, 1);
         speed = 10;
-        boxtype = 4;
+        boxtype = 5;
     }
-
     @Override
     public void Update(long gameTime) {
         super.Update(gameTime);

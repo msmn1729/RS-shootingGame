@@ -12,6 +12,8 @@ import com.example.gameframework.IState;
 import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
+import org.Game.render.BackGround;
+
 public class SelectState implements IState {
     int width = AppManager.getInstance().getDeviceSize().x;
     int height = AppManager.getInstance().getDeviceSize().y;
@@ -41,14 +43,6 @@ public class SelectState implements IState {
         player3 = AppManager.getInstance().getBitmap(R.drawable.air3);
         player3 = Bitmap.createScaledBitmap(player3,300, 300, true);
         gamestart = AppManager.getInstance().getBitmap(R.drawable.gamestart);
-//        back = new BackGround(1);
-//        player1 = AppManager.getInstance().getBitmap(R.drawable.air1);
-//        player1 = Bitmap.createScaledBitmap(player1, (int) (width*0.286), (int) (height*0.17), true);//비행기 1의 비트맵을 받아와 사이즈까지 조절 함
-//        player2 = AppManager.getInstance().getBitmap(R.drawable.air2);
-//        player2 = Bitmap.createScaledBitmap(player2,(int) (width*0.286), (int) (height*0.17), true);
-//        player3 = AppManager.getInstance().getBitmap(R.drawable.air3);
-//        player3 = Bitmap.createScaledBitmap(player3,(int) (width*0.286), (int) (height*0.17), true);
-//        gamestart = AppManager.getInstance().getBitmap(R.drawable.gamestart);
     }
 
     @Override
@@ -87,7 +81,6 @@ public class SelectState implements IState {
     public boolean onTouchEvent(MotionEvent event) {//비행기 선택,
         int x = (int)event.getX(0);
         int y = (int)event.getY(0);
-//        Log.d("", "" + x +"," + y);
         if (x > width*0.15 && x < width*0.44
                 && y > height*0.27 && y < height*0.46)//비행기 1의 좌표를 선택했을 시 선택 이미지를 불러옴
         {//비행기 1 선택 시

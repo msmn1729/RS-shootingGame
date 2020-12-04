@@ -1,4 +1,4 @@
-package org.Game;
+package org.Game.render;
 
 import android.graphics.Canvas;
 

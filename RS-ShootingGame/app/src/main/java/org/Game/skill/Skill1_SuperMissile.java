@@ -1,7 +1,9 @@
-package org.Game;
+package org.Game.skill;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.R;
+
+import org.Game.missile.Missile;
 
 public class Skill1_SuperMissile extends Missile {
     int width = AppManager.getInstance().getDeviceSize().x;

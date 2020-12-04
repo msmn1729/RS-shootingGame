@@ -1,13 +1,11 @@
 package org.Game;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,6 +17,10 @@ import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.SoundManager;
 
+import org.Game.render.R_Back;
+import org.Game.render.R_BackGround;
+import org.Game.render.R_Main;
+import org.Game.render.R_Next;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,16 +77,14 @@ public class RankState implements IState {
         Paint p = new Paint();
         Paint p2 = new Paint();
         Paint p3 = new Paint();
-//        p.setTextSize(40);
-//        p2.setTextSize(45);
-//        p3.setTextSize(80);
+
         p.setTextSize((float) (width * 0.038));
         p2.setTextSize((float) (width * 0.043));
         p3.setTextSize((float) (width * 0.076));
         p.setColor(Color.WHITE);
         p2.setColor(Color.YELLOW);
         p3.setColor(Color.RED);
-        //"playerID""playerAirplaneType""playerScore""recordDate"
+
         int y = 30;
         canvas.drawText("! SHOW ME THE RANK !", (float) (width*0.11),
                 (float) (height*0.057), p3);
@@ -211,8 +211,6 @@ public class RankState implements IState {
                 count = 0;
             } else if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN && scoredata <= 20) {
                 SoundManager.getInstance().play(4);
-//                Toast myToast = Toast.makeText(mcontext, "순위가 총" + String.valueOf(scoredata) + "까지만 존재합니다.", Toast.LENGTH_SHORT);
-//                myToast.show();
             }
         } else if (realflag == 2) {
             if (rt2.contains(_x, _y) && event.getAction() == MotionEvent.ACTION_DOWN) {

@@ -12,6 +12,8 @@ import com.example.gameframework.IState;
 import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
+import org.Game.render.BackGround;
+
 public class ReadyState implements IState {
     int width = AppManager.getInstance().getDeviceSize().x;
     int height = AppManager.getInstance().getDeviceSize().y;
@@ -75,12 +77,6 @@ public class ReadyState implements IState {
     @Override
     public void Render(Canvas canvas) {
         bg_ready.Draw(canvas);
-
-//        canvas.drawBitmap(shoot, 140, 200, null);
-//        canvas.drawBitmap(btn_start,point.x/4, (point.y/8)*4-20, null);
-//        canvas.drawBitmap(btn_rank, point.x/4, (point.y/8) * 5 -30, null);
-//        canvas.drawBitmap(btn_set,point.x/4,(point.y/8) * 6 -40 , null);
-//        canvas.drawBitmap(btn_exit, point.x/4, (point.y/8) * 7 - 50, null);
         canvas.drawBitmap(shoot, (float) (width * 0.13), (float) (height * 0.11), null);
         canvas.drawBitmap(btn_start, point.x / 4, (point.y / 8) * 4 - 20, null);
         canvas.drawBitmap(btn_rank, point.x / 4, (point.y / 8) * 5 - 30, null);

@@ -1,4 +1,4 @@
-package org.Game;
+package org.Game.missile;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -11,9 +11,9 @@ public class Missile extends GraphicObject {
     public static final int STATE_OUT = 1;
     public int state = STATE_NORMAL;
 
-    int speed;
+    public int speed;
 
-    Rect m_BoundBox = new Rect();
+    public Rect m_BoundBox = new Rect();
 
     public Missile(Bitmap bitmap) {
         super(bitmap);

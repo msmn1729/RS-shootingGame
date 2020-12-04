@@ -14,6 +14,8 @@ import com.example.gameframework.InsertView;
 import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
+import org.Game.render.BackGround;
+
 import static com.example.gameframework.GameView.sfh;
 import static com.example.gameframework.MainActivity.mcontext;
 
@@ -69,7 +71,6 @@ public class ExitState implements IState {
         Intent intent = new Intent(mcontext, InsertView.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mcontext.startActivity(intent);
-       // SoundManager.getInstance().play(4);
         return true;
     }
 }

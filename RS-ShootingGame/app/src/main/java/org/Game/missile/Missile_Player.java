@@ -1,7 +1,9 @@
-package org.Game;
+package org.Game.missile;
 
 import com.example.gameframework.AppManager;
 import com.example.gameframework.R;
+
+import org.Game.missile.Missile;
 
 public class Missile_Player extends Missile {
     public Missile_Player(int x, int y, int speed) {

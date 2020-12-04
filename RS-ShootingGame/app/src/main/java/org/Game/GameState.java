@@ -17,6 +17,30 @@ import com.example.gameframework.IState;
 import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
 
+import org.Game.enemy.Enemy;
+import org.Game.enemy.Enemy_1;
+import org.Game.enemy.Enemy_2;
+import org.Game.enemy.Enemy_3;
+import org.Game.missile.Missile;
+import org.Game.missile.Missile_Player;
+import org.Game.player.Player;
+import org.Game.player.Player_1;
+import org.Game.player.Player_2;
+import org.Game.player.Player_3;
+import org.Game.render.BackGround;
+import org.Game.randomBox.RandomBox;
+import org.Game.randomBox.RandomBox_attackDown;
+import org.Game.randomBox.RandomBox_attackUp;
+import org.Game.randomBox.RandomBox_missileSpeedDown;
+import org.Game.randomBox.RandomBox_missileSpeedUp;
+import org.Game.randomBox.RandomBox_plusEffect;
+import org.Game.randomBox.RandomBox_plusLife;
+import org.Game.randomBox.RandomBox_subEffect;
+import org.Game.randomBox.RandomBox_subLife;
+import org.Game.skill.Skill1_SuperMissile;
+import org.Game.skill.Skill2_Enemy_Explosion;
+import org.Game.skill.Skill3_Invincible;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -55,17 +79,17 @@ public class GameState implements IState {
     int width = AppManager.getInstance().getDeviceSize().x;
     int height = AppManager.getInstance().getDeviceSize().y;
 
-    ArrayList<Enemy> m_enemlist = new ArrayList<>();//적리스트
+    public ArrayList<Enemy> m_enemlist = new ArrayList<>();//적리스트
     ArrayList<Missile_Player> m_pmslist = new ArrayList<>();//미사일 리스트
     ArrayList<Missile_Player> m_lpmslist = new ArrayList<>();//왼쪽 미사일 리스트
     ArrayList<Missile_Player> m_rpmslist = new ArrayList<>();//오른쪽 미사일 리스트
-    ArrayList<Missile> m_enemmslist = new ArrayList<>();//적 미사일 리스트
+    public ArrayList<Missile> m_enemmslist = new ArrayList<>();//적 미사일 리스트
     ArrayList<RandomBox> m_randomboxList = new ArrayList<>();//랜덤 박스
     //필살기1, 2 어레이리스트
     ArrayList<Skill1_SuperMissile> m_skill1_list = new ArrayList<>();//미사일 위치
     ArrayList<Skill2_Enemy_Explosion> m_skill2_list = new ArrayList<>(); //폭발할 적 리스트
     //파란 폭발
-    ArrayList<Explosion_Blue> m_explosion_blue = new ArrayList<Explosion_Blue>();
+    ArrayList<SettingState.Explosion_Blue> m_explosion_blue = new ArrayList<SettingState.Explosion_Blue>();
 
     long LastRegenEnemy = System.currentTimeMillis();
 
@@ -213,7 +237,7 @@ public class GameState implements IState {
             }
             //파란 폭발
             for (int i = m_explosion_blue.size() - 1; i >= 0; i--) {
-                Explosion_Blue explosion_blue = m_explosion_blue.get(i);
+                SettingState.Explosion_Blue explosion_blue = m_explosion_blue.get(i);
                 explosion_blue.Update(GameTime); //시간
                 if (explosion_blue.getAnimationEnd())
                     m_explosion_blue.remove(i); //폭발애니메이션 끝나면 리스트삭제
@@ -279,7 +303,7 @@ public class GameState implements IState {
                 skill1.Draw(canvas);
             for (Skill2_Enemy_Explosion skill2 : m_skill2_list)
                 skill2.Draw(canvas);
-            for (Explosion_Blue explosion_blue : m_explosion_blue)
+            for (SettingState.Explosion_Blue explosion_blue : m_explosion_blue)
                 explosion_blue.Draw(canvas);
         } catch (Exception e) {
             System.out.println("오류");
@@ -577,20 +601,20 @@ public class GameState implements IState {
 
         //내 미사일과 적기 충돌시
 //        CheckCollisionBoxToBox(m_pmslist, m_enemlist);
-//        for (int i = m_pmslist.size() - 1; i >= 0; i--) {
-//            for (int j = m_enemlist.size() - 1; j >= 0; j--) {
-//                if (CollisionManager.CheckBoxToBox(m_pmslist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
-//                    //이 부분이 폭발처리
-//                    System.out.println("내 미사일 적기랑 충돌");
-//                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(j).getX(), m_enemlist.get(j).getY()));
-//                    m_pmslist.remove(i);
-//                    m_enemlist.remove(j);
-//                    SoundManager.getInstance().play(5);
-//                    killcnt++;
-//                    return;
-//                }
-//            }
-//        }
+        for (int i = m_pmslist.size() - 1; i >= 0; i--) {
+            for (int j = m_enemlist.size() - 1; j >= 0; j--) {
+                if (CollisionManager.CheckBoxToBox(m_pmslist.get(i).m_BoundBox, m_enemlist.get(j).m_BoundBox)) {
+                    //이 부분이 폭발처리
+                    System.out.println("내 미사일 적기랑 충돌");
+                    m_skill2_list.add(new Skill2_Enemy_Explosion(m_enemlist.get(j).getX(), m_enemlist.get(j).getY()));
+                    m_pmslist.remove(i);
+                    m_enemlist.remove(j);
+                    SoundManager.getInstance().play(5);
+                    killcnt++;
+                    return;
+                }
+            }
+        }
 
         //왼쪽 미사일 충돌 구현
         for (int i = m_lpmslist.size() - 1; i >= 0; i--) {
@@ -629,7 +653,7 @@ public class GameState implements IState {
             for (int i = m_enemlist.size() - 1; i >= 0; i--) {
                 if (CollisionManager.CheckBoxToBox(skill3Invincible.m_BoundBox, m_enemlist.get(i).m_BoundBox)) {
                     //이 부분이 파란폭발처리
-                    m_explosion_blue.add(new Explosion_Blue(m_enemlist.get(i).getX(), m_enemlist.get(i).getY()));
+                    m_explosion_blue.add(new SettingState.Explosion_Blue(m_enemlist.get(i).getX(), m_enemlist.get(i).getY()));
                     m_enemlist.remove(i);
                     killcnt++;
                 }
@@ -638,7 +662,7 @@ public class GameState implements IState {
             for (int i = m_enemmslist.size() - 1; i >= 0; i--) {
                 if (CollisionManager.CheckBoxToBox(skill3Invincible.m_BoundBox, m_enemmslist.get(i).m_BoundBox)) {
                     //이 부분이 파란폭발처리
-                    m_explosion_blue.add(new Explosion_Blue(m_enemmslist.get(i).getX(), m_enemmslist.get(i).getY()));
+                    m_explosion_blue.add(new SettingState.Explosion_Blue(m_enemmslist.get(i).getX(), m_enemmslist.get(i).getY()));
                     m_enemmslist.remove(i);
                 }
             }
@@ -730,7 +754,7 @@ public class GameState implements IState {
                         if (random_flag == 1) //좋은 아이템이면 파란폭발
                         {
                             //SoundManager.getInstance().play(8);
-                            m_explosion_blue.add(new Explosion_Blue(m_player.getX(), m_player.getY()));
+                            m_explosion_blue.add(new SettingState.Explosion_Blue(m_player.getX(), m_player.getY()));
                         } else //나쁜 아이템이면
                         {
                             //SoundManager.getInstance().play(9);

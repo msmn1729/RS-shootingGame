@@ -1,4 +1,4 @@
-package org.Game;
+package org.Game.render;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -35,7 +35,7 @@ public class BackGround extends GraphicObject {
         setPosition(0, (int) m_scroll);
     }
 
-    void Update(long GameTime){
+    public void Update(long GameTime){
         m_scroll = m_scroll + SCROLL_SPEED;
         if(m_scroll >= 0)m_scroll = -2000 + 480;
         setPosition(0, (int)m_scroll);

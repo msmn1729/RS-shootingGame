@@ -47,7 +47,7 @@ public class AppManager {
         DisplayMetrics metrics = AppManager.getInstance().getResource().getDisplayMetrics();
         p.x = metrics.widthPixels;
         p.y = metrics.heightPixels;
-        System.out.println("화면 x : " + p.x + ", y : " + p.y);
+//        System.out.println("화면 x : " + p.x + ", y : " + p.y);
         return p;
     }
 }

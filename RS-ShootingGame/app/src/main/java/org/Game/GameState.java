@@ -139,15 +139,6 @@ public class GameState implements IState {
         m_circle = new M_Circle(AppManager.getInstance().getBitmap(R.drawable.circle_5));
         m_background = new BackGround(2);
 
-
-        //하트 상대좌표
-        //m_life_full_image.setPosition(width*0.02, height*0.01);
-//        m_life_empty_image.setPosition(width*0.);
-        //키패드 절대
-//        m_keypad.setPosition(0, (int) (AppManager.getInstance().getDeviceSize().y * 1200));
-        //키패드 상대
-        //m_keypad.setPosition(0, (int) (height * 0.7));
-
         //스킬버튼 상대좌표
         m_skill_btn_icon.setPosition(0, height - m_skill_btn_icon.m_bitmap.getHeight());
     }
@@ -374,102 +365,6 @@ public class GameState implements IState {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        int x = m_player.getX();
-        final int y = m_player.getY();
-
-        //방향 움직일 때 위치 변경
-        if (startskill3 == 3) {
-            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-                m_player.setPosition(x - 20, y);
-                m_circle.setPosition(x - 20 - cir, y - cir);
-            }
-            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                m_player.setPosition(x + 20, y);
-                m_circle.setPosition(x + 20 - cir, y - cir);
-            }
-            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                m_player.setPosition(x, y - 20);
-                m_circle.setPosition(x - cir, y - 20 - cir);
-            }
-            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                m_player.setPosition(x, y + 20);
-                m_circle.setPosition(x - cir, y + 20 - cir);
-            }
-        } else {
-            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-                m_player.setPosition(x - 20, y);
-                ax = x - 20;
-                ay = y;
-            }
-            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                m_player.setPosition(x + 20, y);
-                ax = x + 20;
-                ay = y;
-            }
-            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                m_player.setPosition(x, y - 20);
-                ax = x;
-                ay = y - 20;
-            }
-            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                m_player.setPosition(x, y + 20);
-                ax = x;
-                ay = y + 20;
-            }
-        }
-
-
-        if (keyCode == KeyEvent.KEYCODE_SPACE) //필살기 키
-        {
-            if (System.currentTimeMillis() - Skilltime < 5000) //딜레이 5초
-            {
-//                Toast myToast = Toast.makeText(mcontext, "쿨타임", Toast.LENGTH_SHORT);
-//                myToast.show();
-                return false;
-            }
-
-            if (skill_cnt > 0) {
-                Skilltime = System.currentTimeMillis(); //딜레이 측정하기 위해 이전값 기억
-                skill_cnt--;
-                if (playertype == 0) {
-
-                    MakeSkill1_SuperMissile();
-                } else if (playertype == 1) {
-
-
-//                    final Handler handler = new Handler();
-//
-//                    for (int i = 0; i < 3; i++)
-//                    {
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                for (int j = 0; j < 3; j++) {
-//                                    Random r = new Random();
-//                                    //이 부분이 폭발처리
-//                                    m_skill2_list.add(new Skill2_Enemy_Explosion(r.nextInt(800), r.nextInt(1500)));
-//
-//                                }
-//                                MakeSkill2_Explosion();
-//                                //handler.postDelayed(this, 3000);
-//                            }
-//                        }, 2000);
-//
-//                    }
-                    MakeSkill2_Explosion();
-                } else if (playertype == 2) {
-
-                    startskill3 = 3;
-                    fflag = 1;
-                    if (startflag == 1) {
-                        m_circle.setPosition(m_player.getX(), m_player.getY());
-                        startflag = 0;
-                    }
-                }
-            }
-
-        }
-
         return true;
     }
 
@@ -508,7 +403,6 @@ public class GameState implements IState {
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-        //System.out.println("터치좌표 x : ," + x + " y : " + y);
 
         int px = m_player.getX();
         int py = m_player.getY();

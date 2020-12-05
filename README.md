@@ -7,7 +7,7 @@
 ![imge](https://img.shields.io/badge/Language-Java-yellow)
 ![imge](https://img.shields.io/badge/Tools-AndroidStudio-red)
 
-## Refactoring
+## Refactoring🛠
 - [x] 랭킹 등록 서버 복구
 - [x] 불필요한 주석제거
 - [x] 코드 정리

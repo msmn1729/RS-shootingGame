@@ -43,6 +43,7 @@ public class SelectState implements IState {
         player3 = AppManager.getInstance().getBitmap(R.drawable.air3);
         player3 = Bitmap.createScaledBitmap(player3,300, 300, true);
         gamestart = AppManager.getInstance().getBitmap(R.drawable.gamestart);
+
     }
 
     @Override
@@ -72,6 +73,7 @@ public class SelectState implements IState {
 
     }
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return false;
@@ -81,36 +83,18 @@ public class SelectState implements IState {
     public boolean onTouchEvent(MotionEvent event) {//비행기 선택,
         int x = (int)event.getX(0);
         int y = (int)event.getY(0);
-        if (x > width*0.15 && x < width*0.44
-                && y > height*0.27 && y < height*0.46)//비행기 1의 좌표를 선택했을 시 선택 이미지를 불러옴
-        {//비행기 1 선택 시
-            SoundManager.getInstance().play(4);
-            player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air1s),300, player1.getHeight(), true);
-            flag = 0;
 
-            player2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air2),300, player2.getHeight(), true);
-            player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3),300, player3.getHeight(), true);
-        }
+        //비행기 1 선택 시
+        if (x > width*0.15 && x < width*0.44 && y > height*0.27 && y < height*0.46)
+            Change(R.drawable.air1s,R.drawable.air2,R.drawable.air3,0);
+            //비행기 2 선택 시
+        else if (x > width*0.6 && x < width*0.89 && y > height*0.29 && y < height*0.46)
+            Change(R.drawable.air1,R.drawable.air2s,R.drawable.air3,0);
 
-        else if (x > width*0.6 && x < width*0.89
-                && y > height*0.29 && y < height*0.46)//비행기 2 선택 시 위의 if문과 처리는 같음
-        {//비행기 2 선택 시
-            SoundManager.getInstance().play(4);
-            player2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air2s),300, player2.getHeight(), true);
-            flag = 1;
+            //비행기 3 선택 시
+        else if(x > width*0.35 && x < width*0.64 && y > height*0.51 && y < height*0.69)
+            Change(R.drawable.air1,R.drawable.air2,R.drawable.air3s,0);
 
-            player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air1),300, player1.getHeight(), true);
-            player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3),300, player3.getHeight(), true);
-        }
-        else if(x > width*0.35 && x < width*0.64
-                && y > height*0.51 && y < height*0.69){
-            SoundManager.getInstance().play(4);
-            player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air3s),300, player3.getHeight(), true);
-            flag = 2;
-
-            player2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air2),300, player2.getHeight(), true);
-            player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(R.drawable.air1),300, player1.getHeight(), true);
-        }
 
         //게임시작을 눌렀을 경우
         if(flag != 3 && x > width*0.29 && x < width*0.71
@@ -121,4 +105,13 @@ public class SelectState implements IState {
         }
         return true;
     }
+
+    public void Change(int nametype1, int nametype2, int nametype3,int num){
+        SoundManager.getInstance().play(4);
+        player1 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(nametype1),300, player1.getHeight(), true);
+        player2 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(nametype2),300, player2.getHeight(), true);
+        player3 = Bitmap.createScaledBitmap(AppManager.getInstance().getBitmap(nametype3),300, player3.getHeight(), true);
+        flag=num;
+    }
+
 }

@@ -12,7 +12,6 @@ import com.example.gameframework.AppManager;
 import com.example.gameframework.IState;
 import com.example.gameframework.R;
 import com.example.gameframework.SoundManager;
-import com.example.gameframework.SpriteAnimation;
 
 import org.Game.render.BackGround;
 
@@ -45,21 +44,11 @@ public class SettingState implements IState {
 
         back = new BackGround(2);
 
-        if (backflag == 1) {
-            bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-            bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-        } else if (backflag == 0) {
-            bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-            bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-        }
+        if (backflag == 1) bg_Change(R.drawable.btnon,R.drawable.btnoff1);
+        else if (backflag == 0) bg_Change(R.drawable.btnoff1,R.drawable.btnon);
+        if (effectflag == 1) ef_Change(R.drawable.btnon,R.drawable.btnoff1);
+        else if (effectflag == 0) ef_Change(R.drawable.btnoff1,R.drawable.btnon);
 
-        if (effectflag == 1) {
-            ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-            ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-        } else if (effectflag == 0) {
-            ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-            ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-        }
 
         btn = AppManager.getInstance().getBitmap(R.drawable.complete);
     }
@@ -124,38 +113,23 @@ public class SettingState implements IState {
             int x = (int) event.getX();
             int y = (int) event.getY();
             SoundManager.getInstance().play(4);
+
             //배경음 켜짐
-            if (x > 400 && x < 550 && y > 500 && y < 650) {
-                SoundManager.getInstance().play(4);
-                backflag = 1;
-                bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-                bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-                SoundManager.getInstance().startMusic(R.raw.bgm);
-            }
+            if (x > 400 && x < 550 && y > 500 && y < 650)
+                bgm_on_off(R.drawable.btnon,R.drawable.btnoff1,1);
             //배경음 꺼짐
-            if (x > 800 && x < 950 && y > 510 && y < 660) {
-                SoundManager.getInstance().play(4);
-                backflag = 0;
-                bg_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-                bg_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-                SoundManager.getInstance().stopMusic(R.raw.bgm);
-            }
+            if (x > 800 && x < 950 && y > 510 && y < 660)
+                bgm_on_off(R.drawable.btnoff1,R.drawable.btnon,0);
+
             //효과음 켜짐
             if (x > 400 && x < 550 && y > 900 && y < 1050) {
-                SoundManager.getInstance().play(4);
-                effectflag = 1;
-
-                ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnon);
-                ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
+                effect_on_off(R.drawable.btnon,R.drawable.btnoff1,1);
                 SoundManager.getInstance().onsound();
             }
             //효과음 꺼짐
             if (x > 800 && x < 950 && y > 900 && y < 1050) {
                 SoundManager.getInstance().play(4);
-                effectflag = 0;
-
-                ef_sound1 = AppManager.getInstance().getBitmap(R.drawable.btnoff1);
-                ef_sound2 = AppManager.getInstance().getBitmap(R.drawable.btnon);
+                effect_on_off(R.drawable.btnon,R.drawable.btnoff1,0);
                 SoundManager.getInstance().offsound();
             }
 
@@ -166,19 +140,31 @@ public class SettingState implements IState {
             }
         }
 
+
         return true;
     }
+    public void ef_Change(int nametype1,int nametype2){
 
-    public static class Explosion_Blue extends SpriteAnimation {
-        public Explosion_Blue(int x, int y) {
-            //폭발 스프라이트 테스트완료
-            super(AppManager.getInstance().getBitmap(R.drawable.explosion_blue));
-            this.initSpriteData(this.m_bitmap.getWidth()/24, this.m_bitmap.getHeight(), 30, 24);
+        ef_sound1 = AppManager.getInstance().getBitmap(nametype1);
+        ef_sound2 = AppManager.getInstance().getBitmap(nametype2);
+    }
+    public void bg_Change(int nametype1,int nametype2){
+        bg_sound1 = AppManager.getInstance().getBitmap(nametype1);
+        bg_sound2 = AppManager.getInstance().getBitmap(nametype2);
 
-            SoundManager.getInstance().play(8);
-            m_x = x;
-            m_y = y;
-            mbReplay = false; //반복안함
-        }
+    }
+
+    public void bgm_on_off(int btn1,int btn2,int num){
+        SoundManager.getInstance().play(4);
+        backflag = 0;
+        bg_sound1 = AppManager.getInstance().getBitmap(btn1);
+        bg_sound2 = AppManager.getInstance().getBitmap(btn2);
+        SoundManager.getInstance().stopMusic(R.raw.bgm);
+    }
+    public void effect_on_off(int btn1,int btn2,int num){
+        SoundManager.getInstance().play(4);
+        effectflag = 0;
+        ef_sound1 = AppManager.getInstance().getBitmap(btn1);
+        ef_sound2 = AppManager.getInstance().getBitmap(btn2);
     }
 }

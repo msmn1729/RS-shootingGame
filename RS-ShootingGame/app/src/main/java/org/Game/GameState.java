@@ -87,7 +87,7 @@ public class GameState implements IState {
     public ArrayList<RandomBox> m_randomboxList = new ArrayList<>();//랜덤 박스
     public ArrayList<GraphicObject> m_skill1_list = new ArrayList<>();//미사일 위치
     public ArrayList<GraphicObject> m_skill2_list = new ArrayList<>(); //폭발할 적 리스트
-    public ArrayList<SettingState.Explosion_Blue> m_explosion_blue = new ArrayList<>(); //파란 폭
+    public ArrayList<Explosion_Blue> m_explosion_blue = new ArrayList<>(); //파란 폭
 
     long LastRegenEnemy = System.currentTimeMillis();
 
@@ -238,7 +238,7 @@ public class GameState implements IState {
             }
             //파란 폭발
             for (int i = m_explosion_blue.size() - 1; i >= 0; i--) {
-                SettingState.Explosion_Blue explosion_blue = m_explosion_blue.get(i);
+                Explosion_Blue explosion_blue = m_explosion_blue.get(i);
                 explosion_blue.Update(GameTime); //시간
                 if (explosion_blue.getAnimationEnd())
                     m_explosion_blue.remove(i); //폭발애니메이션 끝나면 리스트삭제
@@ -307,7 +307,7 @@ public class GameState implements IState {
                 skill1.Draw(canvas);
             for (GraphicObject skill2 : m_skill2_list)
                 skill2.Draw(canvas);
-            for (SettingState.Explosion_Blue explosion_blue : m_explosion_blue)
+            for (Explosion_Blue explosion_blue : m_explosion_blue)
                 explosion_blue.Draw(canvas);
         } catch (Exception e) {
             System.out.println("오류");
@@ -581,7 +581,7 @@ public class GameState implements IState {
             for (int i = m_enemlist.size() - 1; i >= 0; i--) {
                 if (CollisionManager.CheckBoxToBox(skill3Invincible.m_BoundBox, m_enemlist.get(i).m_BoundBox)) {
                     //이 부분이 파란폭발처리
-                    m_explosion_blue.add(new SettingState.Explosion_Blue(m_enemlist.get(i).getX(), m_enemlist.get(i).getY()));
+                    m_explosion_blue.add(new Explosion_Blue(m_enemlist.get(i).getX(), m_enemlist.get(i).getY()));
                     m_enemlist.remove(i);
                     killcnt++;
                 }
@@ -590,7 +590,7 @@ public class GameState implements IState {
             for (int i = m_enemmslist.size() - 1; i >= 0; i--) {
                 if (CollisionManager.CheckBoxToBox(skill3Invincible.m_BoundBox, m_enemmslist.get(i).m_BoundBox)) {
                     //이 부분이 파란폭발처리
-                    m_explosion_blue.add(new SettingState.Explosion_Blue(m_enemmslist.get(i).getX(), m_enemmslist.get(i).getY()));
+                    m_explosion_blue.add(new Explosion_Blue(m_enemmslist.get(i).getX(), m_enemmslist.get(i).getY()));
                     m_enemmslist.remove(i);
                 }
             }
@@ -664,7 +664,7 @@ public class GameState implements IState {
                         if (random_flag == 1) //좋은 아이템이면 파란폭발
                         {
                             SoundManager.getInstance().play(8);
-                            m_explosion_blue.add(new SettingState.Explosion_Blue(m_player.getX(), m_player.getY()));
+                            m_explosion_blue.add(new Explosion_Blue(m_player.getX(), m_player.getY()));
                         } else //나쁜 아이템이면
                         {
                             SoundManager.getInstance().play(9);

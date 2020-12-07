@@ -89,11 +89,10 @@ public class SelectState implements IState {
             Change(R.drawable.air1s,R.drawable.air2,R.drawable.air3,0);
             //비행기 2 선택 시
         else if (x > width*0.6 && x < width*0.89 && y > height*0.29 && y < height*0.46)
-            Change(R.drawable.air1,R.drawable.air2s,R.drawable.air3,0);
-
+            Change(R.drawable.air1,R.drawable.air2s,R.drawable.air3,1);
             //비행기 3 선택 시
         else if(x > width*0.35 && x < width*0.64 && y > height*0.51 && y < height*0.69)
-            Change(R.drawable.air1,R.drawable.air2,R.drawable.air3s,0);
+            Change(R.drawable.air1,R.drawable.air2,R.drawable.air3s,2);
 
 
         //게임시작을 눌렀을 경우

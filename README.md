@@ -8,6 +8,8 @@
 ![imge](https://img.shields.io/badge/Tools-AndroidStudio-red)
 
 ## Refactoring🛠
+- 2020.12.13. Refactored.
+
 - [x] 랭킹 등록 서버 복구
 - [x] 불필요한 주석제거
 - [x] 패키지 모듈화
@@ -15,11 +17,9 @@
 
 - ### GameState
   - [x] 충돌처리 메소드 추출
-
+  
 ## 프로그램 소개:memo:
 - 2020.07.20. Developed.
-
-- 2020.12.13. Refactoring.
 
 - 안드로이드 기반의 실시간 랭킹시스템 슈팅 게임입니다. (Android-based real-time ranking system shooting game.)
 

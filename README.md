@@ -16,7 +16,9 @@
   - [x] 충돌처리 메소드 추출
 
 ## 프로그램 소개:memo:
-- 2020.07.20 Developed.
+- 2020.07.20. Developed.
+
+- 2020.12.13. Refactoring.
 
 - 안드로이드 기반의 실시간 랭킹시스템 슈팅 게임입니다. (Android-based real-time ranking system shooting game.)
 
